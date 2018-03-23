@@ -15,6 +15,8 @@ public class DoppelController : MovingObject {
   private const string key_walk = "walk";
   private const string key_erapse = "erapsed";
 
+  public int number;
+
   public void DoppelMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
@@ -41,7 +43,7 @@ public class DoppelController : MovingObject {
           break;
       }
     }
-    doppelPos = nowPos;
+    doppelPos[number] = nowPos;
   }
 
   void Start()
@@ -58,6 +60,7 @@ public class DoppelController : MovingObject {
       if (beneath.floor < 0 || goMap[beneath.floor, beneath.x, beneath.z] == null) {
         StartCoroutine(Fall());
         exist = false;
+        doppelPos[number] = new MapPos(-1, -1, -1);
       }
     }
     animator.SetInteger(key_erapse, stayCnt);

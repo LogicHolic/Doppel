@@ -16,10 +16,25 @@ public class MapController : MonoBehaviour {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		playerPos = new MapPos(1, 5, 10);
-		doppelPos = new MapPos(1, 12, 6);
-		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		doppelPos = new MapPos[doppelNum];
+
+		doppelPos[0] = new MapPos(1, 12, 6);
+		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos[0]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
 		DoppelController dc = d.GetComponent<DoppelController>();
-		dc.nowPos = doppelPos;
+		dc.nowPos = doppelPos[0];
+		dc.number = 0;
+
+		doppelPos[1] = new MapPos(1, 10, 8);
+		d = Instantiate(doppel, MapposToUnipos(doppelPos[1]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		dc = d.GetComponent<DoppelController>();
+		dc.nowPos = doppelPos[1];
+		dc.number = 1;
+
+		doppelPos[2] = new MapPos(1, 3, 12);
+		d = Instantiate(doppel, MapposToUnipos(doppelPos[2]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		dc = d.GetComponent<DoppelController>();
+		dc.nowPos = doppelPos[2];
+		dc.number = 2;
 
 		GameObject p = Instantiate(player, MapposToUnipos(playerPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
 		PlayerController pc = p.GetComponent<PlayerController>();

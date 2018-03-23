@@ -33,6 +33,19 @@ namespace Game {
     {
       return !(m1 == m2);
     }
+    public static bool operator== (MapPos m1, MapPos[] m2)
+    {
+      for (int i = 0; i < m2.Length; i++) {
+        if (m1 == m2[i]) {
+          return true;
+        }
+      }
+      return false;
+    }
+    public static bool operator!= (MapPos m1, MapPos[] m2)
+    {
+      return !(m1 == m2);
+    }
     public static Vector3 ToVector(MapPos mapPos) {
       return new Vector3(mapPos.floor, mapPos.x, mapPos.z);
     }
@@ -55,7 +68,9 @@ namespace Game {
   //mapに関するstaticな変数を入れておく
   public class MapStatic {
     public static MapPos playerPos;
-    public static MapPos doppelPos;
+    public static MapPos[] doppelPos;
+    public const int doppelNum = 3;
+    
     public const int mapSizeX = 17;
     public const int floorSize = 4;
     public const int mapSizeZ = 17;
