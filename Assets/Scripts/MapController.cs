@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Map.MapStatic;
-using Map;
+using static Game.MapStatic;
+using Game;
 
 public class MapController : MonoBehaviour {
 	public GameObject baseBlock;
@@ -15,7 +15,9 @@ public class MapController : MonoBehaviour {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		playerPos = new MapPos(1, 5, 10);
-		Instantiate(player, MapposToUnipos(playerPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		GameObject p = Instantiate(player, MapposToUnipos(playerPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		PlayerController pc = p.GetComponent<PlayerController>();
+		pc.nowPos = playerPos;
 		CreateMap();
 	}
 
@@ -35,11 +37,14 @@ public class MapController : MonoBehaviour {
 							break;
 						case 2:
 							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
+							BlockController b2 = goMap[floor, dx, dz].GetComponent<BlockController>();
+							b2.nowPos = mapPos;
 							break;
 						case 3:
 							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
-							BlockController b = goMap[floor, dx, dz].GetComponent<BlockController>();
-							b.lightning = true;
+							BlockController b3 = goMap[floor, dx, dz].GetComponent<BlockController>();
+							b3.nowPos = mapPos;
+							b3.lightning = true;
 							break;
 						case 99:
 							goMap[floor, dx, dz] = Instantiate(goal, Pos, Quaternion.identity);
@@ -69,5 +74,6 @@ public class MapController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
 	}
 }
