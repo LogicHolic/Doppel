@@ -27,6 +27,10 @@ public class PlayerController : MovingObject {
     transform.localRotation = Quaternion.LookRotation(direc);
     animator.SetBool(key_walk, true);
 
+    if (nextPos == doppelPos) {
+      gameOver = true;
+      return;
+    }
     if(nextObj == null) {
       StartCoroutine(Move(direc));
       stayCnt = 0;
@@ -37,11 +41,15 @@ public class PlayerController : MovingObject {
         case "MovableBlock":
           GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
           BlockController b = moveBlock.GetComponent<BlockController>();
-          b.BlockMove(direc);
-          if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-            //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-            StartCoroutine(Move(direc));
-            stayCnt = 0;
+          MapPos nextnextPos = GetNextPos(nextPos, direc);
+
+          if (!(nextnextPos.ExceedRange() || nextnextPos.ExceedRange() && nextnextPos == doppelPos)) {
+            b.BlockMove(direc);
+            if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+              //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+              StartCoroutine(Move(direc));
+              stayCnt = 0;
+            }
           }
           break;
       }
@@ -59,6 +67,9 @@ public class PlayerController : MovingObject {
   // Update is called once per frame
   void Update () {
     stayCnt++;
+    if (nowPos == doppelPos) {
+      gameOver = true;
+    }
     if (!isMoving && !gameOver) {
       animator.SetBool(key_walk, false);
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);

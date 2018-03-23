@@ -16,7 +16,7 @@ public class MapController : MonoBehaviour {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		playerPos = new MapPos(1, 5, 10);
-		doppelPos = new MapPos(1, 12, 7);
+		doppelPos = new MapPos(1, 12, 6);
 		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
 		DoppelController dc = d.GetComponent<DoppelController>();
 		dc.nowPos = doppelPos;

@@ -12,6 +12,27 @@ MonoBehaviour:
   m_Name: RecorderWindowSettings
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 114325585789856660}
+--- !u!114 &114090176655632158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d935bf7a4fcf66488738bda5536c1cb, type: 3}
+  m_Name: ce1d1b9f-277f-475c-8884-2ee6aafef0ed
+  m_EditorClassIdentifier: 
+  m_DisplayName: Pixels
+  m_Id: 66f6e38f-ef33-4190-afcd-49cde1d7b392
+  m_OutputSize: 0
+  m_AspectRatio: 0
+  m_ForceEvenSize: 1
+  source: 4
+  m_CameraTag: 
+  m_FlipFinalOutput: 1
+  m_AllowTransparency: 0
+  m_CaptureUI: 0
 --- !u!114 &114325585789856660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,7 +62,7 @@ MonoBehaviour:
     m_leaf: Recordings
   m_InputsSettings:
     m_InputsSettingsAssets:
-    - {fileID: 114397300088189194}
+    - {fileID: 114090176655632158}
     ownerRecorderSettingsAssetId: b5e447c25ca4dea438cca165b24a57df
   m_RecorderTypeName: UTJ.FrameCapturer.Recorders.MP4Recorder, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
@@ -64,24 +85,3 @@ MonoBehaviour:
     audioFlags: 6
     audioMaxTasks: 4
   m_AutoSelectBR: 1
---- !u!114 &114397300088189194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d935bf7a4fcf66488738bda5536c1cb, type: 3}
-  m_Name: 658fb765-ef0b-4035-93fe-a373dfb804c8
-  m_EditorClassIdentifier: 
-  m_DisplayName: Pixels
-  m_Id: 40a87514-ae9b-44f8-bd65-284bafd92706
-  m_OutputSize: 0
-  m_AspectRatio: 0
-  m_ForceEvenSize: 1
-  source: 1
-  m_CameraTag: 
-  m_FlipFinalOutput: 1
-  m_AllowTransparency: 0
-  m_CaptureUI: 0
