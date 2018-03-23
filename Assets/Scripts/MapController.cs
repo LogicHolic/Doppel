@@ -8,6 +8,7 @@ public class MapController : MonoBehaviour {
 	public GameObject baseBlock;
 	public GameObject movableBlock;
 	public GameObject player;
+	public GameObject doppel;
 	public GameObject goal;
 
 	// Use this for initialization
@@ -15,6 +16,11 @@ public class MapController : MonoBehaviour {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		playerPos = new MapPos(1, 5, 10);
+		doppelPos = new MapPos(1, 12, 7);
+		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
+		DoppelController dc = d.GetComponent<DoppelController>();
+		dc.nowPos = doppelPos;
+
 		GameObject p = Instantiate(player, MapposToUnipos(playerPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
 		PlayerController pc = p.GetComponent<PlayerController>();
 		pc.nowPos = playerPos;

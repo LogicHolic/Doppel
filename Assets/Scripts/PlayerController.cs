@@ -14,6 +14,12 @@ public class PlayerController : MovingObject {
   private const string key_walk = "walk";
   private const string key_erapse = "erapsed";
 
+  [SerializeField]
+  public GameObject doppel;
+
+  [SerializeField]
+  private DoppelController d;
+
   public void PlayerMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
@@ -46,6 +52,8 @@ public class PlayerController : MovingObject {
   void Start()
   {
     animator = GetComponent<Animator>();
+    doppel = GameObject.FindWithTag("Doppel");
+    d = doppel.GetComponent<DoppelController>();
   }
 
   // Update is called once per frame
@@ -60,15 +68,27 @@ public class PlayerController : MovingObject {
       }
       if (Input.GetKeyDown(KeyCode.A)) {
         PlayerMove(Vector3.left);
+        if (d.exist) {
+          d.DoppelMove(Vector3.right);
+        }
       }
       if (Input.GetKeyDown(KeyCode.W)) {
         PlayerMove(Vector3.forward);
+        if (d.exist) {
+          d.DoppelMove(Vector3.back);
+        }
       }
       if (Input.GetKeyDown(KeyCode.S)) {
         PlayerMove(Vector3.back);
+        if (d.exist) {
+          d.DoppelMove(Vector3.forward);
+        }
       }
       if (Input.GetKeyDown(KeyCode.D)) {
         PlayerMove(Vector3.right);
+        if (d.exist) {
+          d.DoppelMove(Vector3.left);
+        }
       }
     }
     animator.SetInteger(key_erapse, stayCnt);

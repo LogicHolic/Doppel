@@ -23,7 +23,7 @@ public class MovingObject : MonoBehaviour {
     thisObj = this.gameObject;
     Vector3 ModifiedPos;
     //playerは高さが半分ずれているので処理を分ける
-    if (thisObj.tag == "Player") {
+    if (thisObj.tag == "Player" || thisObj.tag == "Doppel") {
       ModifiedPos = MapController.MapposToUnipos(mapPos) - new Vector3(0, 0.5f, 0);
     } else {
       ModifiedPos = MapController.MapposToUnipos(mapPos);

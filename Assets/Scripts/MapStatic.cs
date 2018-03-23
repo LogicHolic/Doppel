@@ -47,6 +47,7 @@ namespace Game {
   //mapに関するstaticな変数を入れておく
   public class MapStatic {
     public static MapPos playerPos;
+    public static MapPos doppelPos;
     public const int mapSizeX = 15;
     public const int floorSize = 4;
     public const int mapSizeZ = 15;
