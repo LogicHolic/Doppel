@@ -1,23 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using static Game.GameStatic;
 
-public class TextContoroller : MonoBehaviour {
-	TextMeshProUGUI tm;
+public class GoalBlockController : MapObject {
+	private LightningController l;
+	public int goalNumber;
 	// Use this for initialization
 	void Start () {
- 		tm = gameObject.GetComponent<TextMeshProUGUI>();
+		l = gameObject.GetComponent<LightningController>();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if(gameOver) {
-			tm.text = "GameOver";
-		}
-		if (stageClear) {
-			tm.text = "StageClear";
+		if (l.lightning == true) {
+			goalFlag[goalNumber] = true;
 		}
 	}
 }

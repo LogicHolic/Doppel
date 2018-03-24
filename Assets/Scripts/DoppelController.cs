@@ -28,19 +28,15 @@ public class DoppelController : MovingObject {
       StartCoroutine(Move(direc));
       stayCnt = 0;
     } else {
-      switch (nextObj.tag) {
-        case "BaseBlock":
-          break;
-        case "MovableBlock":
-          GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
-          BlockController b = moveBlock.GetComponent<BlockController>();
-          b.BlockMove(direc);
-          if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-            //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-            StartCoroutine(Move(direc));
-            stayCnt = 0;
-          }
-          break;
+      if (nextObj.tag.Contains("Movable")) {
+        GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
+        BlockController b = moveBlock.GetComponent<BlockController>();
+        b.BlockMove(direc);
+        if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+          //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+          StartCoroutine(Move(direc));
+          stayCnt = 0;
+        }
       }
     }
     doppelPos[number] = nowPos;

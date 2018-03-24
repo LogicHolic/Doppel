@@ -5,18 +5,11 @@ using Game;
 using static Game.MapStatic;
 
 //動かせるオブジェクトに付加するスーパークラス
-public class MovingObject : MonoBehaviour {
+public class MovingObject : MapObject {
   public const int MOVE_STEPS = 15;
   protected bool isMoving = false;
   protected GameObject thisObj;
   protected GameObject nextObj;
-  public MapPos nowPos;
-
-  //移動先の座標を取得
-  protected MapPos GetNextPos(MapPos mapPos, Vector3 direc) {
-    MapPos nextPos = mapPos + MapController.UniposToMappos(direc);
-    return nextPos;
-  }
 
   //最終的な移動先をmap上の動きのみから算出した座標に修正
   protected Vector3 ModifyPos(MapPos mapPos) {

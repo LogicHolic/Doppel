@@ -31,23 +31,19 @@ public class PlayerController : MovingObject {
       StartCoroutine(Move(direc));
       stayCnt = 0;
     } else {
-      switch (nextObj.tag) {
-        case "BaseBlock":
-          break;
-        case "MovableBlock":
-          GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
-          BlockController b = moveBlock.GetComponent<BlockController>();
-          MapPos nextnextPos = GetNextPos(nextPos, direc);
+      if (nextObj.tag.Contains("Movable")) {
+        GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
+        BlockController b = moveBlock.GetComponent<BlockController>();
+        MapPos nextnextPos = GetNextPos(nextPos, direc);
 
-          if (!(nextnextPos.ExceedRange() || nextnextPos.ExceedRange() && nextnextPos == doppelPos)) {
-            b.BlockMove(direc);
-            if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-              //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-              StartCoroutine(Move(direc));
-              stayCnt = 0;
-            }
+        if (!(nextnextPos.ExceedRange() || nextnextPos.ExceedRange() && nextnextPos == doppelPos)) {
+          b.BlockMove(direc);
+          if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+            //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+            StartCoroutine(Move(direc));
+            stayCnt = 0;
           }
-          break;
+        }
       }
     }
     playerPos = nowPos;

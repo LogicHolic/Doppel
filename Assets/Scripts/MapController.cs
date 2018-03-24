@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Game.MapStatic;
 using Game;
+using static Game.GameStatic;
 
 public class MapController : MonoBehaviour {
 	public GameObject baseBlock;
 	public GameObject movableBlock;
+	public GameObject iceBlock;
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject goal;
+
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +46,7 @@ public class MapController : MonoBehaviour {
 	}
 
 	void CreateMap() {
+		int goalNum = 0;
 		for (int floor = 0; floor < 2; floor++) {
 			for (int dz = 0; dz < mapSizeZ; dz++) {
 				for (int dx = 0; dx < mapSizeX; dx++) {
@@ -59,21 +63,33 @@ public class MapController : MonoBehaviour {
 						case 2:
 							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
 							BlockController b2 = goMap[floor, dx, dz].GetComponent<BlockController>();
+							LightningController l1 = goMap[floor, dx, dz].GetComponent<LightningController>();
+							l1.lightning = false;
 							b2.nowPos = mapPos;
 							break;
 						case 3:
 							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
 							BlockController b3 = goMap[floor, dx, dz].GetComponent<BlockController>();
+							LightningController l2 = goMap[floor, dx, dz].GetComponent<LightningController>();
 							b3.nowPos = mapPos;
-							b3.lightning = true;
+							l2.lightning = true;
+							break;
+						case 4:
+							goMap[floor, dx, dz] = Instantiate(iceBlock, Pos, Quaternion.identity);
 							break;
 						case 99:
 							goMap[floor, dx, dz] = Instantiate(goal, Pos, Quaternion.identity);
+							GoalBlockController g = goMap[floor, dx, dz].GetComponent<GoalBlockController>();
+							LightningController l3 = goMap[floor, dx, dz].GetComponent<LightningController>();
+							l3.lightning = false;
+							g.nowPos = mapPos;
+							g.goalNumber = goalNum++;
 							break;
 					}
 				}
 			}
 		}
+		goalFlag = new bool[goalNum];
 	}
 
 	//以下4つはmap座標とunity座標の対応づけメソッド
@@ -95,6 +111,17 @@ public class MapController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (GoalJudge()) {
+			stageClear = true;
+		}
+	}
 
+	private bool GoalJudge() {
+		for (int i = 0; i < goalFlag.Length; i++) {
+			if (!goalFlag[i]) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

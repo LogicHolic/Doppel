@@ -22,12 +22,11 @@ GameObject:
   - component: {fileID: 33872392912013250}
   - component: {fileID: 65333582634886284}
   - component: {fileID: 23500493921335122}
-  - component: {fileID: 114492732067489384}
   - component: {fileID: 114942989325687966}
-  - component: {fileID: 114708627095595226}
+  - component: {fileID: 114542969884993254}
   m_Layer: 0
-  m_Name: MovableBlock
-  m_TagString: Movable, Lightning
+  m_Name: IceBlock
+  m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8a638a4ffe8e4c5478078bf5f13622b5, type: 2}
+  - {fileID: 2100000, guid: 573d42dd2f118c14ba07ed5123e33f53, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114492732067489384
+--- !u!114 &114542969884993254
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,23 +105,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1444984068745648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e58097d0f3cc3af489af10961e76d6e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 41e48c40554748f41adc3b39feae2174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114708627095595226
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1444984068745648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a8b70fabd4ca2343a781dbef2deb32d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentColor: {r: 0, g: 0, b: 0, a: 0}
-  lightColor: {r: 0, g: 0, b: 0, a: 0}
-  lightning: 0
 --- !u!114 &114942989325687966
 MonoBehaviour:
   m_ObjectHideFlags: 1
