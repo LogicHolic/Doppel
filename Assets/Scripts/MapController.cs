@@ -4,6 +4,7 @@ using UnityEngine;
 using static Game.MapStatic;
 using Game;
 using static Game.GameStatic;
+using System;
 
 public class MapController : MonoBehaviour {
 	public GameObject baseBlock;
@@ -45,9 +46,11 @@ public class MapController : MonoBehaviour {
 		CreateMap();
 	}
 
+
 	void CreateMap() {
+		goMap = new GameObject[floorSize, mapSizeX, mapSizeZ];
 		int goalNum = 0;
-		for (int floor = 0; floor < 2; floor++) {
+		for (int floor = 0; floor < floorSize; floor++) {
 			for (int dz = 0; dz < mapSizeZ; dz++) {
 				for (int dx = 0; dx < mapSizeX; dx++) {
 					MapPos mapPos = new MapPos(floor, dx, dz);
