@@ -82,13 +82,14 @@ namespace Game {
     //動かさない(のでconstつけてもいい)
     //以下マップ情報(予定も含む)
     // ブロックタイプ
-    // -1 = hole
     // 0　= nothing
     // 1 = hard block
     // 2 = movable
     // 3 = movable & lightning
     // 4 = ice
-    // 5 = stair
+    // 20 = invisible
+    // 100 = player
+    // 200 = doppel
 
     //属性
     //最終的には分ける？

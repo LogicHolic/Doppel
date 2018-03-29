@@ -10,6 +10,7 @@ TagManager:
   - Ice
   - BaseBlock
   - Lightning,Goal
+  - Invisible
   layers:
   - Default
   - TransparentFX

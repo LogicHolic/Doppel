@@ -1155,6 +1155,7 @@ GameObject:
   - component: {fileID: 4120580272155858}
   - component: {fileID: 95466373453510200}
   - component: {fileID: 114221682617589460}
+  - component: {fileID: 65627895910009098}
   m_Layer: 0
   m_Name: Doppel
   m_TagString: Doppel
@@ -5017,6 +5018,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1649367709815946}
   m_Mesh: {fileID: 4300006, guid: 22ef76618cb0b0b428fe6b22b0c37c49, type: 3}
+--- !u!65 &65627895910009098
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1404689488232606}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95466373453510200
 Animator:
   serializedVersion: 3
@@ -5045,6 +5058,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9c0e127019c6648884e8b8c6090e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  exist: 1
+  number: 0
 --- !u!137 &137028683963883672
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

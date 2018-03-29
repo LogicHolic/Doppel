@@ -13,14 +13,17 @@ public class MapController : MonoBehaviour {
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject goal;
+	public GameObject invisibleBlock;
 
-
-	// Use this for initialization
-	void Start () {
+	void Awake () {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		playerPos = new MapPos(1, 5, 10);
 		doppelPos = new MapPos[doppelNum];
+
+		floorSize = map.GetLength(0);
+		mapSizeX = map.GetLength(1);
+		mapSizeZ = map.GetLength(2);
 
 		doppelPos[0] = new MapPos(1, 12, 6);
 		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos[0]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
@@ -62,6 +65,8 @@ public class MapController : MonoBehaviour {
 							break;
 						case 1:
 							goMap[floor, dx, dz] = Instantiate(baseBlock, Pos, Quaternion.identity);
+							HardObjectController h = goMap[floor, dx, dz].GetComponent<HardObjectController>();
+							h.nowPos = mapPos;
 							break;
 						case 2:
 							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
@@ -80,6 +85,11 @@ public class MapController : MonoBehaviour {
 						case 4:
 							goMap[floor, dx, dz] = Instantiate(iceBlock, Pos, Quaternion.identity);
 							break;
+						// case 20:
+						// 	goMap[floor, dx, dz] = Instantiate(invisibleBlock, Pos, Quaternion.identity);
+						// InvisibleBlockController iCon = goMap[floor, dx, dz].GetComponent<InvisibleBlockController>();
+						// iCon.nowPos = mapPos;
+						// 	break;
 						case 99:
 							goMap[floor, dx, dz] = Instantiate(goal, Pos, Quaternion.identity);
 							GoalBlockController g = goMap[floor, dx, dz].GetComponent<GoalBlockController>();
@@ -87,6 +97,9 @@ public class MapController : MonoBehaviour {
 							l3.lightning = false;
 							g.nowPos = mapPos;
 							g.goalNumber = goalNum++;
+							break;
+						case 100:
+
 							break;
 					}
 				}
