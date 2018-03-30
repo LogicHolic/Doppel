@@ -101,8 +101,7 @@ public class MapController : MonoBehaviour {
 		} else if (objName == ("MovableBlock")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
-			GameObject lightningSphere = goMap[mapPos.floor, mapPos.x, mapPos.z].transform.Find("LightningSphere").gameObject;
-			LightningController l = lightningSphere.GetComponent<LightningController>();
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.lightning = lightning;
 			b.nowPos = mapPos;
 		} else if (objName == ("Goal")) {
