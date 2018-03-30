@@ -21,10 +21,10 @@ public class LightningController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		b = gameObject.GetComponent<BlockController>();
-		h = gameObject.GetComponent<HardObjectController>();
-		g = gameObject.GetComponent<GoalBlockController>();
-		if (gameObject.tag.Contains("Movable")) {
+		b = transform.root.gameObject.GetComponent<BlockController>();
+		h = transform.root.gameObject.GetComponent<HardObjectController>();
+		g = transform.root.gameObject.GetComponent<GoalBlockController>();
+		if (transform.root.gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
 			lightColor = new Color(1, 1, 1, 0);
 		} else if (gameObject.tag.Contains("Goal")) {
@@ -62,7 +62,8 @@ public class LightningController : MonoBehaviour {
 			}
 			GameObject nObj = goMap[n.floor, n.x, n.z];
 			if (nObj != null && nObj.tag.Contains("Lightning")) {
-				LightningController l = nObj.GetComponent<LightningController>();
+				GameObject lightningSphere = nObj.transform.Find("LightningSphere").gameObject;
+				LightningController l = lightningSphere.GetComponent<LightningController>();
 				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
 				if (!l.lightning) {
 					StartCoroutine(l.GradLightning(l.currentColor, l.lightColor, true));
