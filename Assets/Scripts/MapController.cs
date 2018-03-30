@@ -8,7 +8,7 @@ using System;
 
 public class MapController : MonoBehaviour {
 	public GameObject baseBlock;
-	public GameObject movableBlock;
+	public GameObject movableLightningBlock;
 	public GameObject iceBlock;
 	public GameObject player;
 	public GameObject doppel;
@@ -58,10 +58,10 @@ public class MapController : MonoBehaviour {
 							Create("BaseBlock", mapPos);
 							break;
 						case 2:
-							Create("MovableBlock", mapPos);
+							Create("MovableLightningBlock", mapPos);
 							break;
 						case 3:
-							Create("MovableBlock", mapPos, true);
+							Create("MovableLightningBlock", mapPos, true);
 							break;
 						case 99:
 							Create("Goal", mapPos);
@@ -98,8 +98,8 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(doppel, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
 			DoppelController dc = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<DoppelController>();
 			dc.nowPos = mapPos;
-		} else if (objName == ("MovableBlock")) {
-			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableBlock, vPos, Quaternion.identity);
+		} else if (objName == ("MovableLightningBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.lightning = lightning;

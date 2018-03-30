@@ -9,6 +9,7 @@ public class LightningController : MonoBehaviour {
 	public const int DURATION = 30;
 	public Color currentColor;
 	public Color lightColor;
+	public Color normalColor;
 	public bool lightning;
 	Vector3[] d = new Vector3[]{Vector3.forward, Vector3.left, Vector3.right, Vector3.back};
 
@@ -26,18 +27,19 @@ public class LightningController : MonoBehaviour {
 		g = gameObject.GetComponent<GoalBlockController>();
 		if (gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
-			lightColor = new Color(1, 1, 1, 0);
+			lightColor = new Color(1, 0, 0, 0);
 		} else if (gameObject.tag.Contains("Goal")) {
 			objectTag = 'g';
 			lightColor = new Color(0.8f, 0.8f, 0.2f, 0);
 		}
+		normalColor = new Color(0.1f, 0.1f, 0.1f, 0);
 
 		lightningPart = transform.Find("LightningPart");
 
 		if (lightning) {
 			currentColor = lightColor;
 		} else {
-			currentColor = new Color(0, 0, 0, 0);
+			currentColor = normalColor;
 		}
 		SetLPColor(currentColor);
 	}
@@ -55,6 +57,7 @@ public class LightningController : MonoBehaviour {
 	}
 
 	void SpreadLightning() {
+		GameObject nObj;
 		for (int i = 0; i < 4; i++) {
 			MapPos n = new MapPos(-1, -1, -1);
 			if (objectTag == 'b') {
@@ -62,7 +65,7 @@ public class LightningController : MonoBehaviour {
 			} else if (objectTag == 'g') {
 				n = g.GetNextPos(nowPos, d[i]);
 			}
-			GameObject nObj = goMap[n.floor, n.x, n.z];
+			nObj = goMap[n.floor, n.x, n.z];
 			if (nObj != null && nObj.tag.Contains("Lightning")) {
 				LightningController l = nObj.GetComponent<LightningController>();
 				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
@@ -71,11 +74,22 @@ public class LightningController : MonoBehaviour {
 				}
 			}
 		}
+		if (nowPos.floor == 0) {
+			nObj = goMap[nowPos.floor+1, nowPos.x, nowPos.z];
+		} else {
+			nObj = goMap[nowPos.floor-1, nowPos.x, nowPos.z];
+		}
+		if (nObj != null && nObj.tag.Contains("Lightning")) {
+			LightningController l = nObj.GetComponent<LightningController>();
+			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+			if (!l.lightning) {
+				StartCoroutine(l.GradLightning(l.currentColor, l.lightColor, true));
+			}
+		}
 	}
 
 	void SetLPColor(Color c) {
 		foreach (Transform child in lightningPart) {
-			Debug.Log(child);
 			Renderer rend = child.gameObject.GetComponent<Renderer>();
 			rend.material.SetColor("_EmissionColor",c);
 		}
