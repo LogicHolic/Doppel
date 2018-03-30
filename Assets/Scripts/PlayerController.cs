@@ -14,7 +14,6 @@ public class PlayerController : MovingObject {
   private const string key_walk = "walk";
   private const string key_erapse = "erapsed";
 
-  public GameObject[] doppels;
 
   public void PlayerMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
@@ -23,30 +22,37 @@ public class PlayerController : MovingObject {
     transform.localRotation = Quaternion.LookRotation(direc);
     animator.SetBool(key_walk, true);
 
-    if (nextPos == doppelPos) {
-      gameOver = true;
-      return;
-    }
+
     if(nextObj == null) {
+      //現在地をnullに
+      goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
+      //移動先に自身を代入
+      goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
       StartCoroutine(Move(direc));
       stayCnt = 0;
-    } else {
-      if (nextObj.tag.Contains("Movable")) {
-        GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
-        BlockController b = moveBlock.GetComponent<BlockController>();
-        MapPos nextnextPos = GetNextPos(nextPos, direc);
+    }
+    else if (nextObj.tag.Contains("Movable")) {
+      GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
+      BlockController b = moveBlock.GetComponent<BlockController>();
+      MapPos nextnextPos = GetNextPos(nextPos, direc);
+      GameObject nextnextObj = goMap[nextnextPos.floor, nextnextPos.x, nextnextPos.z];
 
-        if (!(nextnextPos.ExceedRange() || nextnextPos.ExceedRange() && nextnextPos == doppelPos)) {
-          b.BlockMove(direc);
-          if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-            //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-            StartCoroutine(Move(direc));
-            stayCnt = 0;
-          }
+      if (nextnextPos.ExceedRange() || nextnextObj == null || (!nextnextPos.ExceedRange() && nextnextObj.tag.Contains("Doppel"))) {
+        b.BlockMove(direc);
+        if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+          //現在地をnullに
+          goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
+          //移動先に自身を代入
+          goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
+          //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+          StartCoroutine(Move(direc));
+          stayCnt = 0;
         }
       }
     }
-    playerPos = nowPos;
+    else if (nextObj.tag.Contains("Doppel")) {
+      return;
+    }
   }
 
   void MoveDoppels(Vector3 direc) {
@@ -65,15 +71,12 @@ public class PlayerController : MovingObject {
   void Start()
   {
     animator = GetComponent<Animator>();
-    doppels = GameObject.FindGameObjectsWithTag("Doppel");
   }
 
   // Update is called once per frame
   void Update () {
     stayCnt++;
-    if (nowPos == doppelPos) {
-      gameOver = true;
-    }
+
     if (!isMoving && !gameOver) {
       animator.SetBool(key_walk, false);
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);

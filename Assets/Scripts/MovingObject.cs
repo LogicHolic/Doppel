@@ -17,9 +17,9 @@ public class MovingObject : MapObject {
     Vector3 ModifiedPos;
     //playerは高さが半分ずれているので処理を分ける
     if (thisObj.tag == "Player" || thisObj.tag == "Doppel") {
-      ModifiedPos = MapController.MapposToUnipos(mapPos) - new Vector3(0, 0.5f, 0);
+      ModifiedPos = MapposToUnipos(mapPos) - new Vector3(0, 0.5f, 0);
     } else {
-      ModifiedPos = MapController.MapposToUnipos(mapPos);
+      ModifiedPos = MapposToUnipos(mapPos);
     }
     return ModifiedPos;
   }
@@ -41,6 +41,7 @@ public class MovingObject : MapObject {
 
   protected IEnumerator Fall() {
     isMoving = true;
+    goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
     for (int i = 0; i < MOVE_STEPS * 10; i++) {
       transform.Translate(Vector3.down * 15 / (MOVE_STEPS * 10));
       yield return null;

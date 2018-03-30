@@ -23,11 +23,10 @@ GameObject:
   - component: {fileID: 65333582634886284}
   - component: {fileID: 23500493921335122}
   - component: {fileID: 114492732067489384}
-  - component: {fileID: 114942989325687966}
   - component: {fileID: 114708627095595226}
   m_Layer: 0
   m_Name: MovableBlock
-  m_TagString: Movable, Lightning
+  m_TagString: Movable,Lightning
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,16 +122,3 @@ MonoBehaviour:
   currentColor: {r: 0, g: 0, b: 0, a: 0}
   lightColor: {r: 0, g: 0, b: 0, a: 0}
   lightning: 0
---- !u!114 &114942989325687966
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1444984068745648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 175a14f57bf592e4f8a0309df459e6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Lmat: {fileID: 2100000, guid: aa8ec0d434dbafb4fa871dc541826a1d, type: 2}
-  Dmat: {fileID: 2100000, guid: 8a638a4ffe8e4c5478078bf5f13622b5, type: 2}

@@ -18,111 +18,101 @@ public class MapController : MonoBehaviour {
 	void Awake () {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
-		playerPos = new MapPos(1, 5, 10);
-		doppelPos = new MapPos[doppelNum];
+		doppels = new List<GameObject>();
 
 		floorSize = map.GetLength(0);
 		mapSizeX = map.GetLength(1);
 		mapSizeZ = map.GetLength(2);
+		ExtendMap();
 
-		doppelPos[0] = new MapPos(1, 12, 6);
-		GameObject d = Instantiate(doppel, MapposToUnipos(doppelPos[0]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
-		DoppelController dc = d.GetComponent<DoppelController>();
-		dc.nowPos = doppelPos[0];
-		dc.number = 0;
-
-		doppelPos[1] = new MapPos(1, 10, 8);
-		d = Instantiate(doppel, MapposToUnipos(doppelPos[1]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
-		dc = d.GetComponent<DoppelController>();
-		dc.nowPos = doppelPos[1];
-		dc.number = 1;
-
-		doppelPos[2] = new MapPos(1, 3, 12);
-		d = Instantiate(doppel, MapposToUnipos(doppelPos[2]) - new Vector3(0, 0.5f, 0), Quaternion.identity);
-		dc = d.GetComponent<DoppelController>();
-		dc.nowPos = doppelPos[2];
-		dc.number = 2;
-
-		GameObject p = Instantiate(player, MapposToUnipos(playerPos) - new Vector3(0, 0.5f, 0), Quaternion.identity);
-		PlayerController pc = p.GetComponent<PlayerController>();
-		pc.nowPos = playerPos;
+		floorSize = map.GetLength(0);
+		mapSizeX = map.GetLength(1);
+		mapSizeZ = map.GetLength(2);
 		CreateMap();
 	}
 
+	void ExtendMap() {
+		int[,,] extendedMap = new int[floorSize, mapSizeX+4, mapSizeZ+4];
+		for (int i = 0; i < floorSize; i++) {
+			for (int j = 0; j < mapSizeX; j++) {
+				for (int k = 0; k < mapSizeZ; k++) {
+					extendedMap[i,j+2,k+2] = map[i,j,k];
+				}
+			}
+		}
+		map = extendedMap;
+	}
 
 	void CreateMap() {
 		goMap = new GameObject[floorSize, mapSizeX, mapSizeZ];
-		int goalNum = 0;
+		int goalCount= 0;
 		for (int floor = 0; floor < floorSize; floor++) {
 			for (int dz = 0; dz < mapSizeZ; dz++) {
 				for (int dx = 0; dx < mapSizeX; dx++) {
 					MapPos mapPos = new MapPos(floor, dx, dz);
-					Vector3 Pos = MapposToUnipos(mapPos);
 					switch (map[floor, dx, dz])
 					 {
 						case 0:
-							goMap[floor, dx, dz] = null;
 							break;
 						case 1:
-							goMap[floor, dx, dz] = Instantiate(baseBlock, Pos, Quaternion.identity);
-							HardObjectController h = goMap[floor, dx, dz].GetComponent<HardObjectController>();
-							h.nowPos = mapPos;
+							Create("BaseBlock", mapPos);
 							break;
 						case 2:
-							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
-							BlockController b2 = goMap[floor, dx, dz].GetComponent<BlockController>();
-							LightningController l1 = goMap[floor, dx, dz].GetComponent<LightningController>();
-							l1.lightning = false;
-							b2.nowPos = mapPos;
+							Create("MovableBlock", mapPos);
 							break;
 						case 3:
-							goMap[floor, dx, dz] = Instantiate(movableBlock, Pos, Quaternion.identity);
-							BlockController b3 = goMap[floor, dx, dz].GetComponent<BlockController>();
-							LightningController l2 = goMap[floor, dx, dz].GetComponent<LightningController>();
-							b3.nowPos = mapPos;
-							l2.lightning = true;
+							Create("MovableBlock", mapPos, true);
 							break;
-						case 4:
-							goMap[floor, dx, dz] = Instantiate(iceBlock, Pos, Quaternion.identity);
-							break;
-						// case 20:
-						// 	goMap[floor, dx, dz] = Instantiate(invisibleBlock, Pos, Quaternion.identity);
-						// InvisibleBlockController iCon = goMap[floor, dx, dz].GetComponent<InvisibleBlockController>();
-						// iCon.nowPos = mapPos;
-						// 	break;
 						case 99:
-							goMap[floor, dx, dz] = Instantiate(goal, Pos, Quaternion.identity);
+							Create("Goal", mapPos);
 							GoalBlockController g = goMap[floor, dx, dz].GetComponent<GoalBlockController>();
-							LightningController l3 = goMap[floor, dx, dz].GetComponent<LightningController>();
-							l3.lightning = false;
-							g.nowPos = mapPos;
-							g.goalNumber = goalNum++;
+							g.goalNumber = goalCount++;
 							break;
 						case 100:
-
+							Create("Player", mapPos);
+							break;
+						case 200:
+							Create("Doppel", mapPos);
+							doppels.Add(goMap[floor, dx, dz]);
 							break;
 					}
 				}
 			}
 		}
-		goalFlag = new bool[goalNum];
+		doppelNum = doppels.Count;
+		goalFlag = new bool[goalCount];
 	}
 
-	//以下4つはmap座標とunity座標の対応づけメソッド
-	public static Vector3 MapvecToUnivec(Vector3 Vec) {
-		return new Vector3(Vec.z, Vec.x, -Vec.y);
-	}
+	public void Create(string objName, MapPos mapPos, bool lightning = false) {
+		Vector3 vPos = MapposToUnipos(mapPos);
 
-	public static Vector3 UnivecToMapvec(Vector3 Vec) {
-		return new Vector3(Vec.y, -Vec.z, Vec.x);
-	}
-
-	public static Vector3 MapposToUnipos(MapPos mapPos) {
-		return(MapvecToUnivec(MapPos.ToVector(mapPos)));
-	}
-
-	public static MapPos UniposToMappos(Vector3 unityPos) {
-		return(MapPos.ToMappos(UnivecToMapvec(unityPos)));
+		if (objName == ("BaseBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(baseBlock, vPos, Quaternion.identity);
+			HardObjectController h = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardObjectController>();
+			h.nowPos = mapPos;
+		} else if (objName == ("Player")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(player, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			PlayerController pc = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<PlayerController>();
+			pc.nowPos = mapPos;
+		} else if (objName == ("Doppel")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(doppel, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			DoppelController dc = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<DoppelController>();
+			dc.nowPos = mapPos;
+		} else if (objName == ("MovableBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableBlock, vPos, Quaternion.identity);
+			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.lightning = lightning;
+			b.nowPos = mapPos;
+		} else if (objName == ("Goal")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(goal, vPos, Quaternion.identity);
+			GoalBlockController g = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<GoalBlockController>();
+			g.nowPos = mapPos;
+		} else if (objName == ("InvisibleBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(invisibleBlock, vPos, Quaternion.identity);
+			InvisibleBlockController inv = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<InvisibleBlockController>();
+			inv.nowPos = mapPos;
+		}
 	}
 
 	// Update is called once per frame

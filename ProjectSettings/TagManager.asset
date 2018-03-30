@@ -5,12 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Doppel
-  - Movable, Lightning
   - Lightning
   - Ice
   - BaseBlock
-  - Lightning,Goal
   - Invisible
+  - Movable,Lightning
+  - Goal,Lightning
   layers:
   - Default
   - TransparentFX

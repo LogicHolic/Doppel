@@ -10,7 +10,7 @@ public class MapObject : MonoBehaviour {
 
   //移動先の座標を取得
   public MapPos GetNextPos(MapPos mapPos, Vector3 direc) {
-    MapPos nextPos = mapPos + MapController.UniposToMappos(direc);
+    MapPos nextPos = mapPos + UniposToMappos(direc);
     return nextPos;
   }
 

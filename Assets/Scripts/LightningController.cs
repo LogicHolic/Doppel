@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 using static Game.MapStatic;
+using static Game.GameStatic;
 
 public class LightningController : MonoBehaviour {
 	private Renderer rend;
@@ -47,7 +48,7 @@ public class LightningController : MonoBehaviour {
 		} else if (objectTag == 'g') {
 			nowPos = g.nowPos;
 		}
-		if (lightning) {
+		if (!gameOver && lightning) {
 			SpreadLightning();
 		}
 	}

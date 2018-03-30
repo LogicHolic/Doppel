@@ -10,7 +10,7 @@ public class BlockController : MovingObject {
 		MapPos nextPos = GetNextPos(nowPos, direc);
 		nextObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
 
-		if(nextObj == null && nextPos != doppelPos && nextPos != playerPos) {
+		if(nextObj == null) {
 			//現在地をnullに
 			goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
 			//移動先に自身を代入
