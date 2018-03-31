@@ -23,10 +23,6 @@ public class DoppelController : MovingObject {
     animator.SetBool(key_walk, true);
 
     if(nextObj == null) {
-      //現在地をnullに
-      goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
-      //移動先に自身を代入
-      goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
       StartCoroutine(Move(direc));
       stayCnt = 0;
     } else if (nextObj.tag.Contains("Movable")) {
@@ -35,18 +31,12 @@ public class DoppelController : MovingObject {
       b.BlockMove(direc);
       if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
         //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-        //現在地をnullに
-        goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
-        //移動先に自身を代入
-        goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
         StartCoroutine(Move(direc));
         stayCnt = 0;
       }
     }
     else if (nextObj.tag.Contains("Player")) {
       doppelTouchPlayer = true;
-      //現在地をnullに
-      goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
       StartCoroutine(Move(direc));
       stayCnt = 0;
     }

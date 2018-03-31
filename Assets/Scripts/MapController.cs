@@ -11,7 +11,7 @@ public class MapController : MonoBehaviour {
 	public GameObject hardLightningBlock;
 	public GameObject movableLightningBlock;
 	public GameObject movableBlock;
-	public GameObject iceBlock;
+	public GameObject hardIceBlock;
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject goal;
@@ -73,6 +73,9 @@ public class MapController : MonoBehaviour {
 							break;
 						case 6:
 							Create("MovableLightningBlock", mapPos, true);
+							break;
+						case 7:
+							Create("HardIceBlock", mapPos);
 							break;
 						case 99:
 							Create("Goal", mapPos);
@@ -141,6 +144,10 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(invisibleBlock, vPos, Quaternion.identity);
 			InvisibleBlockController inv = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<InvisibleBlockController>();
 			inv.nowPos = mapPos;
+		} else if (objName == ("HardIceBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(hardIceBlock, vPos, Quaternion.identity);
+			HardIceBlockController ice = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardIceBlockController>();
+			ice.nowPos = mapPos;
 		}
 	}
 

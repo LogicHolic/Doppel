@@ -25,9 +25,6 @@ public class PlayerController : MovingObject {
 
     if(nextObj == null) {
       //現在地をnullに
-      goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
-      //移動先に自身を代入
-      goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
       StartCoroutine(Move(direc));
       stayCnt = 0;
     }
@@ -40,10 +37,6 @@ public class PlayerController : MovingObject {
       if (nextnextPos.ExceedRange() || nextnextObj == null || (!nextnextPos.ExceedRange() && nextnextObj.tag.Contains("Doppel"))) {
         b.BlockMove(direc);
         if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-          //現在地をnullに
-          goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
-          //移動先に自身を代入
-          goMap[nextPos.floor, nextPos.x, nextPos.z] = gameObject;
           //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
           StartCoroutine(Move(direc));
           stayCnt = 0;

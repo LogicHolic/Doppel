@@ -6,7 +6,7 @@ using static Game.MapStatic;
 
 //動かせるオブジェクトに付加するスーパークラス
 public class MovingObject : MapObject {
-  public const int MOVE_STEPS = 15;
+  public const int MOVE_STEPS = 30;
   public bool isMoving = false;
   protected GameObject thisObj;
   protected GameObject nextObj;
@@ -28,15 +28,29 @@ public class MovingObject : MapObject {
   protected IEnumerator Move(Vector3 direc) {
     isMoving = true;
     transform.localRotation = Quaternion.LookRotation(direc);
+
+    //現在地をnullに
+    goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
+    //位置更新
     nowPos = GetNextPos(nowPos, direc);
+    //移動先に自身を代入
+    goMap[nowPos.floor, nowPos.x, nowPos.z] = gameObject;
 
     for (int i = 0; i < MOVE_STEPS; i++) {
       transform.Translate(Vector3.forward / MOVE_STEPS);
       yield return null;
     }
-
     transform.position = ModifyPos(nowPos);
     isMoving = false;
+
+    //氷によるさらなる移動があるか調べる
+    MapPos beneath = nowPos + new MapPos(-1, 0, 0);
+    MapPos nextPos = GetNextPos(nowPos, direc);
+    GameObject uObj = goMap[beneath.floor, beneath.x, beneath.z];
+    GameObject nObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
+    if (uObj != null && uObj.tag.Contains("Ice") && nObj == null) {
+      StartCoroutine(Move(direc));
+    }
   }
 
   protected IEnumerator Fall() {

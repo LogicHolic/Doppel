@@ -189,7 +189,8 @@ MonoBehaviour:
     type: 2}
   movableBlock: {fileID: 1444984068745648, guid: 938d240d53cffaa47adb52a0a5944095,
     type: 2}
-  iceBlock: {fileID: 1444984068745648, guid: fc6e3bd8cd12b0b4d9e49b70852dbfa7, type: 2}
+  hardIceBlock: {fileID: 1444984068745648, guid: fc6e3bd8cd12b0b4d9e49b70852dbfa7,
+    type: 2}
   player: {fileID: 1647736719314870, guid: 4e3ea2bbbd114b543a02628a0fbd3fcf, type: 2}
   doppel: {fileID: 1404689488232606, guid: 533af93813111e2468c57430142bbe30, type: 2}
   goal: {fileID: 1920264734319632, guid: ccf1359c0d3e51d44817b7ee647d5b98, type: 2}
@@ -283,7 +284,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 752849742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ccde8ef3e0ae84eb8e39e1d0b7f08f, type: 3}
+  m_Script: {fileID: 11500000, guid: e8a3c8c75bb9f374b8f1f416c16c5e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &752849745
