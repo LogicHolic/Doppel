@@ -13,6 +13,7 @@ TagManager:
   - Goal,Lightning
   - Hard
   - Hard,Lightning
+  - Movable
   layers:
   - Default
   - TransparentFX

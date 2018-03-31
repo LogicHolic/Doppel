@@ -10,6 +10,7 @@ public class MapController : MonoBehaviour {
 	public GameObject hardBlock;
 	public GameObject hardLightningBlock;
 	public GameObject movableLightningBlock;
+	public GameObject movableBlock;
 	public GameObject iceBlock;
 	public GameObject player;
 	public GameObject doppel;
@@ -64,14 +65,14 @@ public class MapController : MonoBehaviour {
 						case 3:
 							Create("HardLightningBlock", mapPos,true);
 							break;
+						case 4:
+							Create("MovableBlock", mapPos);
+							break;
 						case 5:
 							Create("MovableLightningBlock", mapPos);
 							break;
 						case 6:
 							Create("MovableLightningBlock", mapPos, true);
-							break;
-						case 4:
-							Create("HardBlock", mapPos);
 							break;
 						case 99:
 							Create("Goal", mapPos);
@@ -118,6 +119,10 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(doppel, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
 			DoppelController dc = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<DoppelController>();
 			dc.nowPos = mapPos;
+		} else if (objName == ("MovableBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableBlock, vPos, Quaternion.identity);
+			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			b.nowPos = mapPos;
 		} else if (objName == ("MovableLightningBlock")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
