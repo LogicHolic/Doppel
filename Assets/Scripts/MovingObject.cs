@@ -7,7 +7,7 @@ using static Game.MapStatic;
 //動かせるオブジェクトに付加するスーパークラス
 public class MovingObject : MapObject {
   public const int MOVE_STEPS = 15;
-  protected bool isMoving = false;
+  public bool isMoving = false;
   protected GameObject thisObj;
   protected GameObject nextObj;
 

@@ -24,8 +24,8 @@ GameObject:
   - component: {fileID: 23930965373871646}
   - component: {fileID: 114619073056389672}
   m_Layer: 0
-  m_Name: BaseBlock
-  m_TagString: BaseBlock
+  m_Name: HardBlock
+  m_TagString: Hard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

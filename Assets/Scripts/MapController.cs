@@ -7,7 +7,8 @@ using static Game.GameStatic;
 using System;
 
 public class MapController : MonoBehaviour {
-	public GameObject baseBlock;
+	public GameObject hardBlock;
+	public GameObject hardLightningBlock;
 	public GameObject movableLightningBlock;
 	public GameObject iceBlock;
 	public GameObject player;
@@ -55,13 +56,22 @@ public class MapController : MonoBehaviour {
 						case 0:
 							break;
 						case 1:
-							Create("BaseBlock", mapPos);
+							Create("HardBlock", mapPos);
 							break;
 						case 2:
-							Create("MovableLightningBlock", mapPos);
+							Create("HardLightningBlock", mapPos);
 							break;
 						case 3:
+							Create("HardLightningBlock", mapPos,true);
+							break;
+						case 5:
+							Create("MovableLightningBlock", mapPos);
+							break;
+						case 6:
 							Create("MovableLightningBlock", mapPos, true);
+							break;
+						case 4:
+							Create("HardBlock", mapPos);
 							break;
 						case 99:
 							Create("Goal", mapPos);
@@ -83,12 +93,22 @@ public class MapController : MonoBehaviour {
 		goalFlag = new bool[goalCount];
 	}
 
-	public void Create(string objName, MapPos mapPos, bool lightning = false) {
+	public void Create(string objName, MapPos mapPos, bool always = false) {
 		Vector3 vPos = MapposToUnipos(mapPos);
 
-		if (objName == ("BaseBlock")) {
-			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(baseBlock, vPos, Quaternion.identity);
+		if (objName == ("HardBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(hardBlock, vPos, Quaternion.identity);
 			HardObjectController h = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardObjectController>();
+			h.nowPos = mapPos;
+		} else if (objName == ("HardLightningBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(hardLightningBlock, vPos, Quaternion.identity);
+			HardObjectController h = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardObjectController>();
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			if (always) {
+				l.lightning = true;
+				l.lightningSwitch = true;
+				l.always = true;
+			}
 			h.nowPos = mapPos;
 		} else if (objName == ("Player")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(player, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
@@ -102,7 +122,11 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
-			l.lightning = lightning;
+			if (always) {
+				l.lightning = true;
+				l.lightningSwitch = true;
+				l.always = true;
+			}
 			b.nowPos = mapPos;
 		} else if (objName == ("Goal")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(goal, vPos, Quaternion.identity);

@@ -11,6 +11,8 @@ TagManager:
   - Invisible
   - Movable,Lightning
   - Goal,Lightning
+  - Hard
+  - Hard,Lightning
   layers:
   - Default
   - TransparentFX

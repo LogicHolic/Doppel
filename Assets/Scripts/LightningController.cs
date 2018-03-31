@@ -6,11 +6,15 @@ using static Game.MapStatic;
 using static Game.GameStatic;
 
 public class LightningController : MonoBehaviour {
-	public const int DURATION = 30;
+	public const int DURATION = 200;
 	public Color currentColor;
 	public Color lightColor;
 	public Color normalColor;
+	public bool isLightning;
 	public bool lightning;
+	public bool lightningSwitch;
+	private bool isMoving;
+	public bool always = false;
 	Vector3[] d = new Vector3[]{Vector3.forward, Vector3.left, Vector3.right, Vector3.back};
 
 	private Transform lightningPart;
@@ -28,9 +32,18 @@ public class LightningController : MonoBehaviour {
 		if (gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
 			lightColor = new Color(1, 0, 0, 0);
+			if (always) {
+				lightColor = new Color (1, 1, 1, 0);
+			}
 		} else if (gameObject.tag.Contains("Goal")) {
 			objectTag = 'g';
 			lightColor = new Color(0.8f, 0.8f, 0.2f, 0);
+		} else if (gameObject.tag.Contains("Hard")) {
+			objectTag = 'h';
+			lightColor = new Color(1, 0, 0, 0);
+			if (always) {
+				lightColor = new Color (1, 1, 1, 0);
+			}
 		}
 		normalColor = new Color(0.1f, 0.1f, 0.1f, 0);
 
@@ -48,32 +61,53 @@ public class LightningController : MonoBehaviour {
 	void Update () {
 		if (objectTag == 'b') {
 			nowPos = b.nowPos;
+			isMoving = b.isMoving;
 		} else if (objectTag == 'g') {
 			nowPos = g.nowPos;
+		} else if (objectTag == 'h') {
+			nowPos = h.nowPos;
 		}
-		if (!gameOver && lightning) {
-			SpreadLightning();
+
+		if (!gameOver) {
+			if (!isLightning && lightningSwitch && !lightning) {
+				StartCoroutine(GradLightning(currentColor, lightColor, true));
+			}
+			if (!isLightning && !lightningSwitch && lightning) {
+				StartCoroutine(GradLightning(currentColor, normalColor, false));
+			}
+
+			if (!isLightning && lightning) {
+				SpreadLightning();
+			}
+
+			if (!isLightning && lightning && !always) {
+				CheckLightning();
+			}
 		}
 	}
 
 	void SpreadLightning() {
 		GameObject nObj;
+		//前後左右
 		for (int i = 0; i < 4; i++) {
 			MapPos n = new MapPos(-1, -1, -1);
 			if (objectTag == 'b') {
 				n = b.GetNextPos(nowPos, d[i]);
 			} else if (objectTag == 'g') {
 				n = g.GetNextPos(nowPos, d[i]);
+			} else if (objectTag == 'h') {
+				n = h.GetNextPos(nowPos, d[i]);
 			}
 			nObj = goMap[n.floor, n.x, n.z];
 			if (nObj != null && nObj.tag.Contains("Lightning")) {
 				LightningController l = nObj.GetComponent<LightningController>();
 				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
-				if (!l.lightning) {
-					StartCoroutine(l.GradLightning(l.currentColor, l.lightColor, true));
+				if (!l.lightning && !l.lightningSwitch) {
+					l.lightningSwitch = true;
 				}
 			}
 		}
+		//上下
 		if (nowPos.floor == 0) {
 			nObj = goMap[nowPos.floor+1, nowPos.x, nowPos.z];
 		} else {
@@ -82,9 +116,51 @@ public class LightningController : MonoBehaviour {
 		if (nObj != null && nObj.tag.Contains("Lightning")) {
 			LightningController l = nObj.GetComponent<LightningController>();
 			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
-			if (!l.lightning) {
-				StartCoroutine(l.GradLightning(l.currentColor, l.lightColor, true));
+			if (!l.lightning && !l.lightningSwitch) {
+				l.lightningSwitch = true;
 			}
+		}
+	}
+	void SpreadDisapearing() {
+
+	}
+
+	void CheckLightning() {
+		GameObject nObj;
+		//上下前後左右どれか光っていたらtrue
+		bool lightCheck = false;
+		//前後左右
+		for (int i = 0; i < 4; i++) {
+			MapPos n = new MapPos(-1, -1, -1);
+			if (objectTag == 'b') {
+				n = b.GetNextPos(nowPos, d[i]);
+			} else if (objectTag == 'g') {
+				n = g.GetNextPos(nowPos, d[i]);
+			} else if (objectTag == 'h') {
+				n = h.GetNextPos(nowPos, d[i]);
+			}
+			nObj = goMap[n.floor, n.x, n.z];
+			if (nObj != null && nObj.tag.Contains("Lightning")) {
+				LightningController l = nObj.GetComponent<LightningController>();
+				if (l.lightning) {
+					lightCheck = true;
+				}
+			}
+		}
+		//上下
+		if (nowPos.floor == 0) {
+			nObj = goMap[nowPos.floor+1, nowPos.x, nowPos.z];
+		} else {
+			nObj = goMap[nowPos.floor-1, nowPos.x, nowPos.z];
+		}
+		if (nObj != null && nObj.tag.Contains("Lightning")) {
+			LightningController l = nObj.GetComponent<LightningController>();
+			if (l.lightning) {
+				lightCheck = true;
+			}
+		}
+		if (!lightCheck) {
+			StartCoroutine(GradLightning(currentColor, normalColor, false));
 		}
 	}
 
@@ -96,17 +172,20 @@ public class LightningController : MonoBehaviour {
 	}
 
 	public IEnumerator GradLightning(Color from, Color to, bool l) {
-		lightning = l;
+		lightningSwitch = !l;
+		isLightning = true;
 		Color grad = (to - from)/DURATION;
-		Color prev = from;
+		currentColor = from;
 		for (int i = 0; i < DURATION; i++) {
 			if (i == DURATION - 1) {
-				SetLPColor(to);
+				currentColor = to;
+				SetLPColor(currentColor);
+				lightning = l;
+				isLightning = false;
 				yield break;
 			}
-			Color c = prev + grad;
-			SetLPColor(c);
-			prev = c;
+			currentColor = currentColor + grad;
+			SetLPColor(currentColor);
 			yield return null;
 		}
 	}
