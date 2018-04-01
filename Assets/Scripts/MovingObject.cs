@@ -48,7 +48,9 @@ public class MovingObject : MapObject {
     MapPos nextPos = GetNextPos(nowPos, direc);
     GameObject uObj = goMap[beneath.floor, beneath.x, beneath.z];
     GameObject nObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
-    if (uObj != null && uObj.tag.Contains("Ice") && nObj == null) {
+    //"地面が空でないかつ次のマスが空"かつ"地面が氷または自身が氷"
+    if ( (uObj != null  && nObj == null)
+      && (gameObject.tag.Contains("Ice") || uObj.tag.Contains("Ice")) ){
       StartCoroutine(Move(direc));
     }
   }

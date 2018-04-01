@@ -191,6 +191,8 @@ MonoBehaviour:
     type: 2}
   hardIceBlock: {fileID: 1444984068745648, guid: fc6e3bd8cd12b0b4d9e49b70852dbfa7,
     type: 2}
+  movableIceBlock: {fileID: 1444984068745648, guid: 070b9dda66aeba0408d695d69401bff7,
+    type: 2}
   player: {fileID: 1647736719314870, guid: 4e3ea2bbbd114b543a02628a0fbd3fcf, type: 2}
   doppel: {fileID: 1404689488232606, guid: 533af93813111e2468c57430142bbe30, type: 2}
   goal: {fileID: 1920264734319632, guid: ccf1359c0d3e51d44817b7ee647d5b98, type: 2}
