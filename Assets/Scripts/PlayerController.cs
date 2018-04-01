@@ -61,6 +61,22 @@ public class PlayerController : MovingObject {
     }
   }
 
+  bool isDoppelMoving () {
+    DoppelController d;
+    bool moving = false;
+    for (int i = 0; i < doppelNum; i++) {
+      if (doppels[i] == null) {
+        continue;
+      }
+      d = doppels[i].GetComponent<DoppelController>();
+      if (d.exist && d.isMoving) {
+        moving = true;
+        break;
+      }
+    }
+    return moving;
+  }
+
   void Start()
   {
     animator = GetComponent<Animator>();
@@ -69,9 +85,10 @@ public class PlayerController : MovingObject {
   // Update is called once per frame
   void Update () {
     stayCnt++;
-
-    if (!isMoving && !gameOver) {
+    if (!isMoving) {
       animator.SetBool(key_walk, false);
+    }
+    if (!isMoving && !isDoppelMoving() && !gameOver) {
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);
       if (beneath.floor < 0 || goMap[beneath.floor, beneath.x, beneath.z] == null) {
         StartCoroutine(Fall());
