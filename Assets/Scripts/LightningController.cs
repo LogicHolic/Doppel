@@ -17,6 +17,8 @@ public class LightningController : MonoBehaviour {
 	//光るという指令or消えるという指令を受けている
 	public bool lightningSwitch;
 	private bool isMoving;
+	//playerまたはdoppelが乗っている
+
 	public bool connectAlways;
 	public bool always = false;
 	private List<MapPos> searchedList;
@@ -76,21 +78,29 @@ public class LightningController : MonoBehaviour {
 		}
 
 		if (!gameOver) {
+			if (objectTag == 'g' && g.playerIsOn) {
+				connectAlways = true;
+				lightningSwitch = true;
+				lightning = true;
+			}
 			if (!isLightning && lightningSwitch && !lightning) {
 				if (objectTag == 'g') {
-					StartCoroutine(g.GateOpen());
+					if (!g.playerIsOn) {
+						StartCoroutine(g.GateOpen());
+					}
 				} else {
 					StartCoroutine(GradLightning(currentColor, lightColor, true));
 				}
 			}
 			if (!isLightning && !lightningSwitch && lightning) {
 				if (objectTag == 'g') {
-					StartCoroutine(g.GateClose());
+					if (!g.playerIsOn) {
+						StartCoroutine(g.GateClose());
+					}
 				} else {
 					StartCoroutine(GradLightning(currentColor, normalColor, false));
 				}
 			}
-
 			//alwaysとつながっているすべてのオブジェクトのconnectAlwaysをtrueに
 			if (always) {
 				searchedList = new List<MapPos>();
@@ -111,9 +121,10 @@ public class LightningController : MonoBehaviour {
 			if (!isLightning && lightning && objectTag != 'g') {
 				SpreadLightning();
 			}
+
+			//毎フレームステータスを更新するためfalseに
+			connectAlways = false;
 		}
-		//毎フレームステータスを更新するためfalseに
-		connectAlways = false;
 	}
 
 	void ConnectAlwaysSearch(MapPos pos) {

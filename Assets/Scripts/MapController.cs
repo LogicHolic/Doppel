@@ -95,7 +95,6 @@ public class MapController : MonoBehaviour {
 				}
 			}
 		}
-		doppelNum = doppels.Count;
 		goalFlag = new bool[goalCount];
 	}
 

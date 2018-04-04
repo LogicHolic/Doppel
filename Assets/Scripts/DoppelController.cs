@@ -22,8 +22,7 @@ public class DoppelController : MovingObject {
     transform.localRotation = Quaternion.LookRotation(direc);
     animator.SetBool(key_walk, true);
 
-    GameObject g = goMap[nextPos.floor, nextPos.x, nextPos.z];
-    if (isViable(g)) {
+    if (isViable(nextObj)) {
       StartCoroutine(Move(direc));
       stayCnt = 0;
     } else if (nextObj.tag.Contains("Movable")) {
