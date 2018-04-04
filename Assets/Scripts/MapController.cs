@@ -15,7 +15,7 @@ public class MapController : MonoBehaviour {
 	public GameObject movableIceBlock;
 	public GameObject player;
 	public GameObject doppel;
-	public GameObject goal;
+	public GameObject gate;
 	public GameObject invisibleBlock;
 
 	void Awake () {
@@ -81,10 +81,8 @@ public class MapController : MonoBehaviour {
 						case 8:
 							Create("MovableIceBlock", mapPos);
 							break;
-						case 99:
-							Create("Goal", mapPos);
-							GoalBlockController g = goMap[floor, dx, dz].GetComponent<GoalBlockController>();
-							g.goalNumber = goalCount++;
+						case 9:
+							Create("Gate", mapPos);
 							break;
 						case 100:
 							Create("Player", mapPos);
@@ -133,16 +131,16 @@ public class MapController : MonoBehaviour {
 		} else if (objName == ("MovableLightningBlock")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
-			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			if (always) {
+				LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 				l.lightning = true;
 				l.lightningSwitch = true;
 				l.always = true;
 			}
 			b.nowPos = mapPos;
-		} else if (objName == ("Goal")) {
-			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(goal, vPos, Quaternion.identity);
-			GoalBlockController g = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<GoalBlockController>();
+		} else if (objName == ("Gate")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(gate, vPos, Quaternion.identity);
+			GateController g = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<GateController>();
 			g.nowPos = mapPos;
 		} else if (objName == ("InvisibleBlock")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(invisibleBlock, vPos, Quaternion.identity);
@@ -161,9 +159,9 @@ public class MapController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (GoalJudge()) {
-			stageClear = true;
-		}
+		// if (GoalJudge()) {
+		// 	stageClear = true;
+		// }
 	}
 
 	private bool GoalJudge() {

@@ -21,4 +21,17 @@ public class MapObject : MonoBehaviour {
   // Update is called once per frame
   void Update () {
   }
+
+  protected bool isViable(GameObject g) {
+    if (g == null) {
+      return true;
+    }
+    if (g.tag.Contains("Gate")) {
+      LightningController l = g.GetComponent<LightningController>();
+      if (l.lightning) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

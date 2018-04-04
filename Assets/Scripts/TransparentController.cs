@@ -31,15 +31,21 @@ public class TransparentController : MonoBehaviour {
 				MapPos mapPos = new MapPos(1, dx, dz);
 				GameObject obj = goMap[mapPos.floor, mapPos.x, mapPos.z];
 				if (obj != null && obj.tag != "Player" && obj.tag != "Doppel") {
-					if (obj.tag.Contains("Lightning")) {
+					if (obj.tag.Contains("Lightning") && !obj.tag.Contains("Gate")) {
 						Transform basePart = obj.transform.Find("BasePart");
-						foreach (Transform child in basePart) {
-							Renderer rend = child.gameObject.GetComponent<Renderer>();
-							rend.material.SetColor("_Color",new Color(1,1,1,0.25f));
+						if (basePart != null) {
+							foreach (Transform child in basePart) {
+								Renderer rend = child.gameObject.GetComponent<Renderer>();
+								Color c = rend.material.GetColor("_Color");
+								c.a = 0.25f;
+								rend.material.SetColor("_Color",c);
+							}
 						}
 					} else {
 						Renderer rend = obj.GetComponent<Renderer>();
-						rend.material.SetColor("_Color",new Color(1,1,1,0.25f));
+						Color c = rend.material.GetColor("_Color");
+						c.a = 0.25f;
+						rend.material.SetColor("_Color",c);
 					}
 				}
 			}
@@ -52,15 +58,24 @@ public class TransparentController : MonoBehaviour {
 				MapPos mapPos = new MapPos(1, dx, dz);
 				GameObject obj = goMap[mapPos.floor, mapPos.x, mapPos.z];
 				if (obj != null && obj.tag != "Player" && obj.tag != "Doppel") {
-					if (obj.tag.Contains("Lightning")) {
+					if (obj.tag.Contains("Lightning") && !obj.tag.Contains("Gate")) {
 						Transform basePart = obj.transform.Find("BasePart");
 						foreach (Transform child in basePart) {
 							Renderer rend = child.gameObject.GetComponent<Renderer>();
-							rend.material.SetColor("_Color",new Color(1,1,1,1));
+							Color c = rend.material.GetColor("_Color");
+							c.a = 1;
+							rend.material.SetColor("_Color",c);
 						}
 					} else {
 						Renderer rend = obj.GetComponent<Renderer>();
-						rend.material.SetColor("_Color",new Color(1,1,1,1));
+						Color c = rend.material.GetColor("_Color");
+						if (obj.tag.Contains("Ice")) {
+							rend.material.SetFloat("_Transparency", 0f);
+							c.a = 0.6f;
+						} else {
+							c.a = 1;
+						}
+						rend.material.SetColor("_Color",c);
 					}
 				}
 			}

@@ -6,7 +6,6 @@ using static Game.MapStatic;
 
 //動かせるオブジェクトに付加するスーパークラス
 public class MovingObject : MapObject {
-  public const int MOVE_STEPS = 30;
   public bool isMoving = false;
   protected GameObject thisObj;
   protected GameObject nextObj;
@@ -25,7 +24,7 @@ public class MovingObject : MapObject {
   }
 
   //オブジェクトが動く時の共通処理はここに書く
-  protected IEnumerator Move(Vector3 direc) {
+  protected IEnumerator Move(Vector3 direc, int MOVE_STEPS = 15) {
     isMoving = true;
     transform.localRotation = Quaternion.LookRotation(direc);
 
@@ -55,7 +54,7 @@ public class MovingObject : MapObject {
     }
   }
 
-  protected IEnumerator Fall() {
+  protected IEnumerator Fall(int MOVE_STEPS = 15) {
     isMoving = true;
     goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
     for (int i = 0; i < MOVE_STEPS * 10; i++) {

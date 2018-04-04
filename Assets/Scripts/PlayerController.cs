@@ -22,8 +22,8 @@ public class PlayerController : MovingObject {
     transform.localRotation = Quaternion.LookRotation(direc);
     animator.SetBool(key_walk, true);
 
-
-    if(nextObj == null) {
+    GameObject g = goMap[nextPos.floor, nextPos.x, nextPos.z];
+    if (isViable(g)) {
       //現在地をnullに
       StartCoroutine(Move(direc));
       stayCnt = 0;
@@ -36,6 +36,7 @@ public class PlayerController : MovingObject {
 
       if (nextnextPos.ExceedRange() || nextnextObj == null || (!nextnextPos.ExceedRange() && nextnextObj.tag.Contains("Doppel"))) {
         b.BlockMove(direc);
+        g = goMap[nextPos.floor, nextPos.x, nextPos.z];
         if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
           //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
           StartCoroutine(Move(direc));

@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Doppel
   - Lightning
-  - Ice
-  - BaseBlock
   - Invisible
   - Movable,Lightning
   - Goal,Lightning
@@ -16,6 +14,8 @@ TagManager:
   - Movable
   - Ice,Hard
   - Ice,Movable
+  - Gate
+  - Gate, Lightning
   layers:
   - Default
   - TransparentFX

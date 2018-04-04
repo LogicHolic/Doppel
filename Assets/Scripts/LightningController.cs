@@ -10,8 +10,11 @@ public class LightningController : MonoBehaviour {
 	public Color currentColor;
 	public Color lightColor;
 	public Color normalColor;
+	//光りつつあるor消えつつある
 	public bool isLightning;
+	//光っている
 	public bool lightning;
+	//光るという指令or消えるという指令を受けている
 	public bool lightningSwitch;
 	private bool isMoving;
 	public bool connectAlways;
@@ -23,7 +26,7 @@ public class LightningController : MonoBehaviour {
 	private Transform lightningPart;
 	private BlockController b;
 	private HardObjectController h;
-	private GoalBlockController g;
+	private GateController g;
 	private MapPos nowPos;
 	private char objectTag;
 
@@ -31,16 +34,15 @@ public class LightningController : MonoBehaviour {
 	void Start () {
 		b = gameObject.GetComponent<BlockController>();
 		h = gameObject.GetComponent<HardObjectController>();
-		g = gameObject.GetComponent<GoalBlockController>();
+		g = gameObject.GetComponent<GateController>();
 		if (gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
 			lightColor = new Color(1, 0, 0, 0);
 			if (always) {
 				lightColor = new Color (1, 1, 1, 0);
 			}
-		} else if (gameObject.tag.Contains("Goal")) {
+		} else if (gameObject.tag.Contains("Gate")) {
 			objectTag = 'g';
-			lightColor = new Color(0.8f, 0.8f, 0.2f, 0);
 		} else if (gameObject.tag.Contains("Hard")) {
 			objectTag = 'h';
 			lightColor = new Color(1, 0, 0, 0);
@@ -52,12 +54,14 @@ public class LightningController : MonoBehaviour {
 
 		lightningPart = transform.Find("LightningPart");
 
-		if (lightning) {
-			currentColor = lightColor;
-		} else {
-			currentColor = normalColor;
+		if (objectTag != 'g') {
+			if (lightning) {
+				currentColor = lightColor;
+			} else {
+				currentColor = normalColor;
+			}
+			SetLPColor(currentColor);
 		}
-		SetLPColor(currentColor);
 	}
 
 	// Update is called once per frame
@@ -73,29 +77,42 @@ public class LightningController : MonoBehaviour {
 
 		if (!gameOver) {
 			if (!isLightning && lightningSwitch && !lightning) {
-				StartCoroutine(GradLightning(currentColor, lightColor, true));
+				if (objectTag == 'g') {
+					StartCoroutine(g.GateOpen());
+				} else {
+					StartCoroutine(GradLightning(currentColor, lightColor, true));
+				}
 			}
 			if (!isLightning && !lightningSwitch && lightning) {
-				StartCoroutine(GradLightning(currentColor, normalColor, false));
+				if (objectTag == 'g') {
+					StartCoroutine(g.GateClose());
+				} else {
+					StartCoroutine(GradLightning(currentColor, normalColor, false));
+				}
 			}
 
+			//alwaysとつながっているすべてのオブジェクトのconnectAlwaysをtrueに
 			if (always) {
 				searchedList = new List<MapPos>();
 				ConnectAlwaysSearch(nowPos);
 			}
 
 			if (!always && !connectAlways) {
-				currentColor = normalColor;
-				SetLPColor(currentColor);
-				lightning = false;
-				isLightning = false;
-				lightningSwitch = false;
+				if (objectTag != 'g') {
+					currentColor = normalColor;
+					SetLPColor(currentColor);
+					lightning = false;
+					isLightning = false;
+					lightningSwitch = false;
+				} else {
+					lightningSwitch = false;
+				}
 			}
-			if (!isLightning && lightning) {
+			if (!isLightning && lightning && objectTag != 'g') {
 				SpreadLightning();
 			}
-
 		}
+		//毎フレームステータスを更新するためfalseに
 		connectAlways = false;
 	}
 
