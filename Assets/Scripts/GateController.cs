@@ -14,7 +14,7 @@ public class GateController : MapObject {
 	private PlayerController p;
 	private DoppelController[] d;
 
-	public bool playerIsOn;
+	public bool objectIsOn;
 
 	void Start () {
 		renderer = GetComponent<SkinnedMeshRenderer>();
@@ -30,20 +30,18 @@ public class GateController : MapObject {
 
 	// Update is called once per frame
 	void Update () {
-		playerIsOn = playerCheck();
-		if (!playerIsOn) {
+		objectIsOn = objectCheck();
+		if (!objectIsOn) {
 			goMap[nowPos.floor, nowPos.x, nowPos.z] = gameObject;
 		}
 	}
 
-	private bool playerCheck() {
-		if (nowPos == p.nowPos) {
-			return true;
+	private bool objectCheck() {
+		if (goMap[nowPos.floor, nowPos.x, nowPos.z] == null) {
+			return false;
 		}
-		for (int i = 0; i < d.Length; i++) {
-			if (nowPos == d[i].nowPos) {
-				return true;
-			}
+		if (goMap[nowPos.floor, nowPos.x, nowPos.z] != gameObject) {
+			return true;
 		}
 		return false;
 	}

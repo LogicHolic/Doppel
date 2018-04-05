@@ -42,6 +42,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 400004}
+  - component: {fileID: 114479355861945776}
+  - component: {fileID: 114405165286640540}
   m_Layer: 0
   m_Name: TeleportGreen
   m_TagString: Untagged
@@ -10221,3 +10223,35 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100004}
   m_IsPrefabParent: 1
+--- !u!114 &114405165286640540
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8b70fabd4ca2343a781dbef2deb32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  isLightning: 0
+  lightning: 0
+  lightningSwitch: 0
+  connectAlways: 0
+  always: 0
+--- !u!114 &114479355861945776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c0d7a55a2fce43a8e3ee967ae1203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portNum: 0
+  active: 0

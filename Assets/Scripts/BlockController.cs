@@ -10,7 +10,7 @@ public class BlockController : MovingObject {
 		MapPos nextPos = GetNextPos(nowPos, direc);
 		nextObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
 
-		if(nextObj == null) {
+		if(isViable(nextObj)) {
 			StartCoroutine(Move(direc));
 		}
 	}

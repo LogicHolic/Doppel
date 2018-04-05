@@ -30,16 +30,11 @@ public class PlayerController : MovingObject {
     else if (nextObj.tag.Contains("Movable")) {
       GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
       BlockController b = moveBlock.GetComponent<BlockController>();
-      MapPos nextnextPos = GetNextPos(nextPos, direc);
-      GameObject nextnextObj = goMap[nextnextPos.floor, nextnextPos.x, nextnextPos.z];
-
-      if (nextnextPos.ExceedRange() || nextnextObj == null || (!nextnextPos.ExceedRange() && nextnextObj.tag.Contains("Doppel"))) {
-        b.BlockMove(direc);
-        if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
-          //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-          StartCoroutine(Move(direc));
-          stayCnt = 0;
-        }
+      b.BlockMove(direc);
+      if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+        //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+        StartCoroutine(Move(direc));
+        stayCnt = 0;
       }
     }
     else if (nextObj.tag.Contains("Doppel")) {

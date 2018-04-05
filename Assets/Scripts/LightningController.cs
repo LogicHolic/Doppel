@@ -29,6 +29,7 @@ public class LightningController : MonoBehaviour {
 	private BlockController b;
 	private HardObjectController h;
 	private GateController g;
+	private TeleporterController t;
 	private MapPos nowPos;
 	private char objectTag;
 
@@ -37,6 +38,7 @@ public class LightningController : MonoBehaviour {
 		b = gameObject.GetComponent<BlockController>();
 		h = gameObject.GetComponent<HardObjectController>();
 		g = gameObject.GetComponent<GateController>();
+		t = gameObject.GetComponent<TeleporterController>();
 		if (gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
 			lightColor = new Color(1, 0, 0, 0);
@@ -51,12 +53,14 @@ public class LightningController : MonoBehaviour {
 			if (always) {
 				lightColor = new Color (1, 1, 1, 0);
 			}
+		} else if (gameObject.tag.Contains("Teleporter")) {
+			objectTag = 't';
 		}
 		normalColor = new Color(0.1f, 0.1f, 0.1f, 0);
 
 		lightningPart = transform.Find("LightningPart");
 
-		if (objectTag != 'g') {
+		if (objectTag != 'g' && objectTag != 't') {
 			if (lightning) {
 				currentColor = lightColor;
 			} else {
@@ -75,17 +79,19 @@ public class LightningController : MonoBehaviour {
 			nowPos = g.nowPos;
 		} else if (objectTag == 'h') {
 			nowPos = h.nowPos;
+		} else if (objectTag == 't') {
+			nowPos = t.nowPos;
 		}
 
 		if (!gameOver) {
-			if (objectTag == 'g' && g.playerIsOn) {
+			if (objectTag == 'g' && g.objectIsOn) {
 				connectAlways = true;
 				lightningSwitch = true;
 				lightning = true;
 			}
 			if (!isLightning && lightningSwitch && !lightning) {
 				if (objectTag == 'g') {
-					if (!g.playerIsOn) {
+					if (!g.objectIsOn) {
 						StartCoroutine(g.GateOpen());
 					}
 				} else {
@@ -94,7 +100,7 @@ public class LightningController : MonoBehaviour {
 			}
 			if (!isLightning && !lightningSwitch && lightning) {
 				if (objectTag == 'g') {
-					if (!g.playerIsOn) {
+					if (!g.objectIsOn) {
 						StartCoroutine(g.GateClose());
 					}
 				} else {

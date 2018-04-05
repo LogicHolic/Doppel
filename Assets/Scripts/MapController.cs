@@ -16,7 +16,10 @@ public class MapController : MonoBehaviour {
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject gate;
+	public GameObject teleporter;
 	public GameObject invisibleBlock;
+
+	public int teleportNum;
 
 	void Awake () {
 		//player生成
@@ -83,6 +86,9 @@ public class MapController : MonoBehaviour {
 							break;
 						case 9:
 							Create("Gate", mapPos);
+							break;
+						case 10:
+							Create("Teleporter", mapPos);
 							break;
 						case 100:
 							Create("Player", mapPos);
@@ -153,6 +159,11 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableIceBlock, vPos, Quaternion.identity);
 			BlockController b = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			b.nowPos = mapPos;
+		} else if (objName == ("Teleporter")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporter, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
+			t.nowPos = mapPos;
+			t.portNum = teleportNum++;
 		}
 	}
 

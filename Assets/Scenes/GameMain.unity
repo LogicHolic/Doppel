@@ -196,7 +196,9 @@ MonoBehaviour:
   player: {fileID: 1647736719314870, guid: 4e3ea2bbbd114b543a02628a0fbd3fcf, type: 2}
   doppel: {fileID: 1404689488232606, guid: 533af93813111e2468c57430142bbe30, type: 2}
   gate: {fileID: 1303172810693852, guid: 968c7db565e6b394a8f5106b87a1bab8, type: 2}
+  teleporter: {fileID: 100004, guid: 53d818fe21816488e931816bd69d501e, type: 2}
   invisibleBlock: {fileID: 0}
+  teleportNum: 0
 --- !u!4 &273656519
 Transform:
   m_ObjectHideFlags: 0
