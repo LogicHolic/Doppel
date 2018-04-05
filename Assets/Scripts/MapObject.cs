@@ -26,7 +26,7 @@ public class MapObject : MonoBehaviour {
     if (g == null) {
       return true;
     }
-    if (g.tag.Contains("Gate")) {
+    if (g.tag.Contains("Gate") || g.tag.Contains("Teleporter")) {
       LightningController l = g.GetComponent<LightningController>();
       if (l.lightning) {
         return true;

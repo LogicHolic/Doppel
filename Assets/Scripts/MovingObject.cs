@@ -10,12 +10,13 @@ public class MovingObject : MapObject {
   protected GameObject thisObj;
   protected GameObject nextObj;
 
+  public GameObject behind;
+
   //最終的な移動先をmap上の動きのみから算出した座標に修正
-  protected Vector3 ModifyPos(MapPos mapPos) {
-    thisObj = this.gameObject;
+  public Vector3 ModifyPos(MapPos mapPos) {
     Vector3 ModifiedPos;
     //playerは高さが半分ずれているので処理を分ける
-    if (thisObj.tag == "Player" || thisObj.tag == "Doppel") {
+    if (gameObject.tag == "Player" || gameObject.tag == "Doppel" || gameObject.tag.Contains("Teleporter")) {
       ModifiedPos = MapposToUnipos(mapPos) - new Vector3(0, 0.5f, 0);
     } else {
       ModifiedPos = MapposToUnipos(mapPos);
@@ -52,6 +53,10 @@ public class MovingObject : MapObject {
       && (gameObject.tag.Contains("Ice") || uObj.tag.Contains("Ice")) ){
       StartCoroutine(Move(direc));
     }
+  }
+
+  public bool haveBehind() {
+    return behind != null;
   }
 
   protected IEnumerator Fall(int MOVE_STEPS = 15) {

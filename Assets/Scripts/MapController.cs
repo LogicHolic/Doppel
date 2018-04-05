@@ -25,6 +25,7 @@ public class MapController : MonoBehaviour {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
 		doppels = new List<GameObject>();
+		teleporters = new TeleporterController[2,3];
 
 		floorSize = map.GetLength(0);
 		mapSizeX = map.GetLength(1);
@@ -163,7 +164,10 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporter, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
 			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
 			t.nowPos = mapPos;
-			t.portNum = teleportNum++;
+			t.portNum = teleportNum;
+			t.color = 1;
+			teleporters[teleportNum,1] = t;
+			teleportNum++;
 		}
 	}
 
