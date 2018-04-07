@@ -18,24 +18,23 @@ public class PlayerController : MovingObject {
   public void PlayerMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = moMap[nextPos.floor, nextPos.x, nextPos.z];
-
     transform.localRotation = Quaternion.LookRotation(direc);
-    animator.SetBool(key_walk, true);
 
     if (isViable(nextPos)) {
+      animator.SetBool(key_walk, true);
       //現在地をnullに
       StartCoroutine(Move(direc));
-      stayCnt = 0;
     } else if (nextObj != null && nextObj.tag.Contains("Movable")) {
       GameObject moveBlock = nextObj;
       BlockController b = moveBlock.GetComponent<BlockController>();
       b.BlockMove(direc);
-      nextPos = GetNextPos(nowPos, direc);
-      if (isViable(nextPos)) {
-        //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-        StartCoroutine(Move(direc));
-        stayCnt = 0;
-      }
+      stayCount = 0;
+      // nextPos = GetNextPos(nowPos, direc);
+      // if (isViable(nextPos)) {
+      //   //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+      //   StartCoroutine(Move(direc));
+      //   stayCnt = 0;
+      // }
     }
   }
 
@@ -75,33 +74,36 @@ public class PlayerController : MovingObject {
 
   // Update is called once per frame
   void Update () {
-    stayCnt++;
+    stayCount++;
+    if (stayCount >= 100000) {
+      stayCount = 100;
+    }
     if (!isMoving) {
       animator.SetBool(key_walk, false);
     }
-    if (!isMoving && !isDoppelMoving() && !gameOver) {
+    if (!isMoving && !isDoppelMoving() && !gameOver && stayCount >= 3) {
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);
       if (beneath.floor < 0 || goMap[beneath.floor, beneath.x, beneath.z] == null) {
         StartCoroutine(Fall());
         gameOver = true;
       }
-      if (Input.GetKeyDown(KeyCode.A)) {
+      else if (Input.GetKey(KeyCode.A)) {
         PlayerMove(Vector3.left);
         MoveDoppels(Vector3.right);
       }
-      if (Input.GetKeyDown(KeyCode.W)) {
+      else if (Input.GetKey(KeyCode.W)) {
         PlayerMove(Vector3.forward);
         MoveDoppels(Vector3.back);
       }
-      if (Input.GetKeyDown(KeyCode.S)) {
+      else if (Input.GetKey(KeyCode.S)) {
         PlayerMove(Vector3.back);
         MoveDoppels(Vector3.forward);
       }
-      if (Input.GetKeyDown(KeyCode.D)) {
+      else if (Input.GetKey(KeyCode.D)) {
         PlayerMove(Vector3.right);
         MoveDoppels(Vector3.left);
       }
     }
-    animator.SetInteger(key_erapse, stayCnt);
+    animator.SetInteger(key_erapse, stayCount);
   }
 }

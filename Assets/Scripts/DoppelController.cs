@@ -24,22 +24,21 @@ public class DoppelController : MovingObject {
 
     if (isViable(nextPos)) {
       StartCoroutine(Move(direc));
-      stayCnt = 0;
     } else if (nextObj != null && nextObj.tag.Contains("Movable")) {
       GameObject moveBlock = nextObj;
       BlockController b = moveBlock.GetComponent<BlockController>();
       b.BlockMove(direc);
-      nextPos = GetNextPos(nowPos, direc);
-      if (isViable(nextPos)) {
-        //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
-        StartCoroutine(Move(direc));
-        stayCnt = 0;
-      }
+      stayCount = 0;
+      // nextPos = GetNextPos(nowPos, direc);
+      // if (isViable(nextPos)) {
+      //   //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
+      //   StartCoroutine(Move(direc));
+      //   stayCnt = 0;
+      // }
     }
     else if (nextObj != null && nextObj.tag.Contains("Player")) {
       doppelTouchPlayer = true;
       StartCoroutine(Move(direc));
-      stayCnt = 0;
     }
   }
 
@@ -50,19 +49,19 @@ public class DoppelController : MovingObject {
 
   // Update is called once per frame
   void Update () {
-    stayCnt++;
+    stayCount++;
     if (!isMoving && doppelTouchPlayer) {
       gameOver = true;
     }
 
-    if (!isMoving) {
+    if (!isMoving && exist) {
       animator.SetBool(key_walk, false);
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);
       if (beneath.floor < 0 || goMap[beneath.floor, beneath.x, beneath.z] == null) {
-        StartCoroutine(Fall());
         exist = false;
+        StartCoroutine(Fall());
       }
     }
-    animator.SetInteger(key_erapse, stayCnt);
+    animator.SetInteger(key_erapse, stayCount);
   }
 }

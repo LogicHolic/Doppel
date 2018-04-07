@@ -146,6 +146,15 @@ public class LightningController : MonoBehaviour {
 		LightningController l;
 		bool addFlag = false;
 
+		//自身のマス
+		if (gameObject.tag.Contains("Movable")) {
+			GameObject obj = goMap[pos.floor, pos.x, pos.z];
+			if (obj != null && obj.tag.Contains("Lightning")) {
+				l = obj.GetComponent<LightningController>();
+				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+				l.connectAlways = true;
+			}
+		}
 		//前後左右
 		for (int i = 0; i < 4; i++) {
 			if (objectTag == 'b') {
@@ -205,6 +214,18 @@ public class LightningController : MonoBehaviour {
 		GameObject nObj2;
 		LightningController l;
 		MapPos n = new MapPos(-1, -1, -1);
+
+		//自身のマス
+		if (gameObject.tag.Contains("Movable")) {
+			GameObject obj = goMap[nowPos.floor, nowPos.x, nowPos.z];
+			if (obj != null && obj.tag.Contains("Lightning")) {
+				l = obj.GetComponent<LightningController>();
+				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+				if (!l.lightning && !l.lightningSwitch) {
+					l.lightningSwitch = true;
+				}
+			}
+		}
 		//前後左右
 		for (int i = 0; i < 4; i++) {
 			if (objectTag == 'b') {

@@ -10,6 +10,7 @@ public class TeleporterController : MapObject {
 	public int portNum;
 
 	private GameObject par1;
+	private GameObject par3;
 	private LightningController l;
 
 	public bool objectIsOn;
@@ -17,6 +18,7 @@ public class TeleporterController : MapObject {
 	// Use this for initialization
 	void Start () {
 		par1 = GameObject.Find("par1");
+		par3 = GameObject.Find("par3");
 		Deactivate();
 		l = gameObject.GetComponent<LightningController>();
  	}
@@ -41,10 +43,12 @@ public class TeleporterController : MapObject {
 
 	void Activate() {
 		par1.SetActive(true);
+		par3.SetActive(true);
 	}
 
 	void Deactivate() {
 		par1.SetActive(false);
+		par3.SetActive(false);
 	}
 
 	bool objIsMoving (GameObject obj) {

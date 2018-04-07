@@ -7,7 +7,6 @@ using static Game.MapStatic;
 public class BlockController : MovingObject {
 	public void BlockMove(Vector3 direc) {
 		MapPos nextPos = GetNextPos(nowPos, direc);
-
 		if(isViable(nextPos)) {
 			StartCoroutine(Move(direc));
 		}

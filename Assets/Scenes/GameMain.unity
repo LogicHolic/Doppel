@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings:
-  - {fileID: 2098328097}
+  - {fileID: 0}
 --- !u!1 &273656517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,21 +1006,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02264b91a16794aab8f8696ed917fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2098328097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c011637fb4c894c56a9178092966b5ac, type: 3}
-  m_Name: 9142926f-12c8-4f30-b0cb-2cfc63e1a78a
-  m_EditorClassIdentifier: 
-  m_DisplayName: Animation
-  m_Id: 0c2e89e4-66aa-4a85-bf0e-f53b1c227fe3
-  gameObject: {fileID: 0}
-  enabled: 0
-  recursive: 1
-  fold: 1
-  bindingTypeName: []
