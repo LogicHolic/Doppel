@@ -22,16 +22,21 @@ public class MapObject : MonoBehaviour {
   void Update () {
   }
 
-  protected bool isViable(GameObject g) {
-    if (g == null) {
-      return true;
-    }
-    if (g.tag.Contains("Gate") || g.tag.Contains("Teleporter")) {
+  protected bool isViable(MapPos pos) {
+    GameObject g = goMap[pos.floor, pos.x, pos.z];
+    GameObject m = moMap[pos.floor, pos.x, pos.z];
+    bool b1 = false, b2 = false;
+    if (g == null  || g.tag.Contains("Teleporter")) {
+      b1 = true;
+    } else if (g.tag.Contains("Gate")) {
       LightningController l = g.GetComponent<LightningController>();
       if (l.lightning) {
-        return true;
+        b1 = true;
       }
     }
-    return false;
+    if (m == null) {
+      b2 = true;
+    }
+    return b1 && b2;
   }
 }

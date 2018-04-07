@@ -11,8 +11,6 @@ public class GateController : MapObject {
 	private int gateIndex;
 	private float weight = 0;
 
-	private PlayerController p;
-	private DoppelController[] d;
 
 	public bool objectIsOn;
 
@@ -20,31 +18,17 @@ public class GateController : MapObject {
 		renderer = GetComponent<SkinnedMeshRenderer>();
 		gateIndex = renderer.sharedMesh.GetBlendShapeIndex("blendShape1.open3");
 		l = GetComponent<LightningController>();
-		p = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-
-		d = new DoppelController[doppels.Count];
-		for (int i = 0; i < doppels.Count; i++) {
-			d[i] = doppels[i].GetComponent<DoppelController>();
-		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		objectIsOn = objectCheck();
-		if (!objectIsOn) {
-			goMap[nowPos.floor, nowPos.x, nowPos.z] = gameObject;
+		if (moMap[nowPos.floor, nowPos.x, nowPos.z] != null) {
+			objectIsOn = true;
+		} else {
+			objectIsOn = false;
 		}
 	}
 
-	private bool objectCheck() {
-		if (goMap[nowPos.floor, nowPos.x, nowPos.z] == null) {
-			return false;
-		}
-		if (goMap[nowPos.floor, nowPos.x, nowPos.z] != gameObject) {
-			return true;
-		}
-		return false;
-	}
 
 	public IEnumerator GateOpen(float speed = 2) {
 		l.lightningSwitch = true;

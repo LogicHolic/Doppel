@@ -17,25 +17,26 @@ public class DoppelController : MovingObject {
 
   public void DoppelMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
-    nextObj = goMap[nextPos.floor, nextPos.x, nextPos.z];
+    nextObj = moMap[nextPos.floor, nextPos.x, nextPos.z];
 
     transform.localRotation = Quaternion.LookRotation(direc);
     animator.SetBool(key_walk, true);
 
-    if (isViable(nextObj)) {
+    if (isViable(nextPos)) {
       StartCoroutine(Move(direc));
       stayCnt = 0;
-    } else if (nextObj.tag.Contains("Movable")) {
-      GameObject moveBlock = goMap[nextPos.floor, nextPos.x, nextPos.z];
+    } else if (nextObj != null && nextObj.tag.Contains("Movable")) {
+      GameObject moveBlock = nextObj;
       BlockController b = moveBlock.GetComponent<BlockController>();
       b.BlockMove(direc);
-      if (goMap[nextPos.floor, nextPos.x, nextPos.z] == null) {
+      nextPos = GetNextPos(nowPos, direc);
+      if (isViable(nextPos)) {
         //ブロック移動後移動先が空いているなら == ブロックが動けたなら　プレイヤーを動かす
         StartCoroutine(Move(direc));
         stayCnt = 0;
       }
     }
-    else if (nextObj.tag.Contains("Player")) {
+    else if (nextObj != null && nextObj.tag.Contains("Player")) {
       doppelTouchPlayer = true;
       StartCoroutine(Move(direc));
       stayCnt = 0;

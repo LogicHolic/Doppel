@@ -23,29 +23,20 @@ public class TeleporterController : MapObject {
 
 	// Update is called once per frame
 	void Update () {
-		objectIsOn = objectCheck();
-		if (!objectIsOn) {
-			goMap[nowPos.floor, nowPos.x, nowPos.z] = gameObject;
+		if (moMap[nowPos.floor, nowPos.x, nowPos.z] != null) {
+			objectIsOn = true;
+		} else {
+			objectIsOn = false;
 		}
 
 		if (l.lightning) {
 			Activate();
-			if (objectIsOn && !objIsMoving(goMap[nowPos.floor, nowPos.x, nowPos.z])) {
+			if (objectIsOn && !objIsMoving(moMap[nowPos.floor, nowPos.x, nowPos.z])) {
 				TeleportCheck();
 			}
 		} else {
 			Deactivate();
 		}
-	}
-
-	private bool objectCheck() {
-		if (goMap[nowPos.floor, nowPos.x, nowPos.z] == null) {
-			return false;
-		}
-		if (goMap[nowPos.floor, nowPos.x, nowPos.z] != gameObject) {
-			return true;
-		}
-		return false;
 	}
 
 	void Activate() {
@@ -70,13 +61,39 @@ public class TeleporterController : MapObject {
 		return false;
 	}
 
+	bool ObjIsTeleported (GameObject obj) {
+		if (obj.tag.Contains("Movable")) {
+			BlockController b = obj.GetComponent<BlockController>();
+			return b.isTeleported;
+		} else if (obj.tag.Contains("Player")) {
+			PlayerController p = obj.GetComponent<PlayerController>();
+			return p.isTeleported;
+		} else if (obj.tag.Contains("Doppel")) {
+			DoppelController d = obj.GetComponent<DoppelController>();
+			return d.isTeleported;
+		}
+		return false;
+	}
+
+	void SetIsTeleported (GameObject obj) {
+		if (obj.tag.Contains("Movable")) {
+			BlockController b = obj.GetComponent<BlockController>();
+			b.isTeleported = true;
+		} else if (obj.tag.Contains("Player")) {
+			PlayerController p = obj.GetComponent<PlayerController>();
+			p.isTeleported = true;
+		} else if (obj.tag.Contains("Doppel")) {
+			DoppelController d = obj.GetComponent<DoppelController>();
+			d.isTeleported = true;
+		}
+	}
+
 	void TeleportCheck() {
 		if (portNum == 0) {
 			LightningController l = teleporters[1, color].gameObject.GetComponent<LightningController>();
 			if (l.lightning) {
 				MapPos to = teleporters[1, color].nowPos;
-				GameObject toObj = goMap[to.floor, to.x, to.z];
-				if (isViable(toObj)) {
+				if (isViable(to)) {
 					Teleport(to);
 				}
 			}
@@ -84,8 +101,7 @@ public class TeleporterController : MapObject {
 			LightningController l = teleporters[0, color].gameObject.GetComponent<LightningController>();
 			if (l.lightning) {
 				MapPos to = teleporters[0, color].nowPos;
-				GameObject toObj = goMap[to.floor, to.x, to.z];
-				if (isViable(toObj)) {
+				if (isViable(to)) {
 					Teleport(to);
 				}
 			}
@@ -93,10 +109,13 @@ public class TeleporterController : MapObject {
 	}
 
 	void Teleport(MapPos to) {
-		GameObject obj = goMap[nowPos.floor, nowPos.x, nowPos.z];
-		goMap[nowPos.floor, nowPos.x, nowPos.z] = null;
-		goMap[to.floor, to.x, to.z] = obj;
-		SetPos(obj, to);
+		GameObject obj = moMap[nowPos.floor, nowPos.x, nowPos.z];
+		if (!ObjIsTeleported(obj)) {
+			moMap[nowPos.floor, nowPos.x, nowPos.z] = null;
+			moMap[to.floor, to.x, to.z] = obj;
+			SetPos(obj, to);
+			SetIsTeleported(obj);
+		}
   }
 
 	private static void SetPos (GameObject obj, MapPos pos) {

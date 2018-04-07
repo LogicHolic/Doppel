@@ -74,7 +74,7 @@ public class LightningController : MonoBehaviour {
 	void Update () {
 		if (objectTag == 'b') {
 			nowPos = b.nowPos;
-			isMoving = b.isMoving;
+			// isMoving = b.isMoving;
 		} else if (objectTag == 'g') {
 			nowPos = g.nowPos;
 		} else if (objectTag == 'h') {
@@ -139,11 +139,13 @@ public class LightningController : MonoBehaviour {
 	}
 
 	void ConnectAlwaysSearch(MapPos pos) {
-		GameObject nObj;
 		MapPos n = new MapPos(-1, -1, -1);
-
+		GameObject nObj1;
+		GameObject nObj2;
 		searchedList.Add(pos);
 		LightningController l;
+		bool addFlag = false;
+
 		//前後左右
 		for (int i = 0; i < 4; i++) {
 			if (objectTag == 'b') {
@@ -153,54 +155,58 @@ public class LightningController : MonoBehaviour {
 			} else if (objectTag == 'h') {
 				n = h.GetNextPos(pos, d[i]);
 			}
-			nObj = EntityOrBehind(goMap[n.floor, n.x, n.z]);
-			if (nObj != null && nObj.tag.Contains("Lightning") && !searchedList.Contains(n)) {
-				l = nObj.GetComponent<LightningController>();
+			nObj1 = goMap[n.floor, n.x, n.z];
+			addFlag = false;
+			if (nObj1 != null && nObj1.tag.Contains("Lightning") && !searchedList.Contains(n)) {
+				l = nObj1.GetComponent<LightningController>();
 				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
 				l.connectAlways = true;
+				addFlag = true;
+			}
+			nObj2 = moMap[n.floor, n.x, n.z];
+			if (nObj2 != null && nObj2.tag.Contains("Lightning") && !searchedList.Contains(n)) {
+				l = nObj2.GetComponent<LightningController>();
+				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+				l.connectAlways = true;
+				addFlag = true;
+			}
+			if (addFlag) {
 				ConnectAlwaysSearch(n);
 			}
 		}
 		//上下
 		if (pos.floor == 0) {
 			n = new MapPos(pos.floor+1, pos.x, pos.z);
-			nObj = EntityOrBehind(goMap[pos.floor+1, pos.x, pos.z]);
 		} else {
 			n = new MapPos(pos.floor-1, pos.x, pos.z);
-			nObj = EntityOrBehind(goMap[pos.floor-1, pos.x, pos.z]);
 		}
-		if (nObj != null && nObj.tag.Contains("Lightning") && !searchedList.Contains(n)) {
-			l = nObj.GetComponent<LightningController>();
+		nObj1 = goMap[n.floor, n.x, n.z];
+		addFlag = false;
+		if (nObj1 != null && nObj1.tag.Contains("Lightning") && !searchedList.Contains(n)) {
+			l = nObj1.GetComponent<LightningController>();
 			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
 			l.connectAlways = true;
+			addFlag = true;
+		}
+		nObj2 = moMap[n.floor, n.x, n.z];
+		if (nObj2 != null && nObj2.tag.Contains("Lightning") && !searchedList.Contains(n)) {
+			l = nObj2.GetComponent<LightningController>();
+			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+			l.connectAlways = true;
+			addFlag = true;
+		}
+		if (addFlag) {
 			ConnectAlwaysSearch(n);
 		}
 	}
 
-	GameObject EntityOrBehind (GameObject obj) {
-		if (obj == null) {
-			return null;
-		}
-		if (obj.tag.Contains("Lightning")) {
-			return obj;
-		}  else if (obj.tag.Contains("Movable")) {
-			BlockController b = obj.GetComponent<BlockController>();
-			return b.behind;
-		} else if (obj.tag.Contains("Player")) {
-			PlayerController p = obj.GetComponent<PlayerController>();
-			return p.behind;
-		} else if (obj.tag.Contains("Doppel")) {
-			DoppelController d = obj.GetComponent<DoppelController>();
-			return d.behind;
-		}
-		return null;
-	}
-
 	void SpreadLightning() {
-		GameObject nObj;
+		GameObject nObj1;
+		GameObject nObj2;
+		LightningController l;
+		MapPos n = new MapPos(-1, -1, -1);
 		//前後左右
 		for (int i = 0; i < 4; i++) {
-			MapPos n = new MapPos(-1, -1, -1);
 			if (objectTag == 'b') {
 				n = b.GetNextPos(nowPos, d[i]);
 			} else if (objectTag == 'g') {
@@ -208,9 +214,17 @@ public class LightningController : MonoBehaviour {
 			} else if (objectTag == 'h') {
 				n = h.GetNextPos(nowPos, d[i]);
 			}
-			nObj = goMap[n.floor, n.x, n.z];
-			if (nObj != null && nObj.tag.Contains("Lightning")) {
-				LightningController l = nObj.GetComponent<LightningController>();
+			nObj1 = goMap[n.floor, n.x, n.z];
+			if (nObj1 != null && nObj1.tag.Contains("Lightning")) {
+				l = nObj1.GetComponent<LightningController>();
+				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+				if (!l.lightning && !l.lightningSwitch) {
+					l.lightningSwitch = true;
+				}
+			}
+			nObj2 = moMap[n.floor, n.x, n.z];
+			if (nObj2 != null && nObj2.tag.Contains("Lightning")) {
+				l = nObj2.GetComponent<LightningController>();
 				//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
 				if (!l.lightning && !l.lightningSwitch) {
 					l.lightningSwitch = true;
@@ -219,12 +233,21 @@ public class LightningController : MonoBehaviour {
 		}
 		//上下
 		if (nowPos.floor == 0) {
-			nObj = goMap[nowPos.floor+1, nowPos.x, nowPos.z];
+			n = new MapPos(nowPos.floor+1, nowPos.x, nowPos.z);
 		} else {
-			nObj = goMap[nowPos.floor-1, nowPos.x, nowPos.z];
+			n = new MapPos(nowPos.floor-1, nowPos.x, nowPos.z);
 		}
-		if (nObj != null && nObj.tag.Contains("Lightning")) {
-			LightningController l = nObj.GetComponent<LightningController>();
+		nObj1 = goMap[n.floor, n.x, n.z];
+		if (nObj1 != null && nObj1.tag.Contains("Lightning")) {
+			l = nObj1.GetComponent<LightningController>();
+			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
+			if (!l.lightning && !l.lightningSwitch) {
+				l.lightningSwitch = true;
+			}
+		}
+		nObj2 = moMap[n.floor, n.x, n.z];
+		if (nObj2 != null && nObj2.tag.Contains("Lightning")) {
+			l = nObj2.GetComponent<LightningController>();
 			//オブジェクトが光っているとき，周りに光っていないオブジェクトがあったら光らせる
 			if (!l.lightning && !l.lightningSwitch) {
 				l.lightningSwitch = true;
