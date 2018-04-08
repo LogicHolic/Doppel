@@ -185,9 +185,11 @@ MonoBehaviour:
   hardBlock: {fileID: 1788814853393778, guid: c92ee75564136b341b81186969f2f8cb, type: 2}
   hardLightningBlock: {fileID: 1920264734319632, guid: 24ff4d987077d914ab8f21336bc26f67,
     type: 2}
+  movableBlock: {fileID: 1444984068745648, guid: 938d240d53cffaa47adb52a0a5944095,
+    type: 2}
   movableLightningBlock: {fileID: 1920264734319632, guid: ca496f789f660284bb86b23f68edcbb3,
     type: 2}
-  movableBlock: {fileID: 1444984068745648, guid: 938d240d53cffaa47adb52a0a5944095,
+  movableLightningIBlock: {fileID: 1735185316237320, guid: 58ecacb8b6b85244cb68a318522c7d87,
     type: 2}
   hardIceBlock: {fileID: 1444984068745648, guid: fc6e3bd8cd12b0b4d9e49b70852dbfa7,
     type: 2}

@@ -19,10 +19,8 @@ public class DoppelController : MovingObject {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = moMap[nextPos.floor, nextPos.x, nextPos.z];
 
-    transform.localRotation = Quaternion.LookRotation(direc);
-    animator.SetBool(key_walk, true);
-
     if (isViable(nextPos)) {
+      animator.SetBool(key_walk, true);
       StartCoroutine(Move(direc));
     } else if (nextObj != null && nextObj.tag.Contains("Movable")) {
       GameObject moveBlock = nextObj;
@@ -38,12 +36,14 @@ public class DoppelController : MovingObject {
     }
     else if (nextObj != null && nextObj.tag.Contains("Player")) {
       doppelTouchPlayer = true;
+      animator.SetBool(key_walk, true);
       StartCoroutine(Move(direc));
     }
   }
 
   void Start()
   {
+    direction = Vector3.forward;
     animator = GetComponent<Animator>();
   }
 

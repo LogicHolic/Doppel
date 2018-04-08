@@ -9,8 +9,9 @@ using System;
 public class MapController : MonoBehaviour {
 	public GameObject hardBlock;
 	public GameObject hardLightningBlock;
-	public GameObject movableLightningBlock;
 	public GameObject movableBlock;
+	public GameObject movableLightningBlock;
+	public GameObject movableLightningIBlock;
 	public GameObject hardIceBlock;
 	public GameObject movableIceBlock;
 	public GameObject player;
@@ -92,6 +93,9 @@ public class MapController : MonoBehaviour {
 						case 10:
 							Create("Teleporter", mapPos);
 							break;
+						case 11:
+							Create("MovableLightningIBlock", mapPos);
+							break;
 						case 100:
 							Create("Player", mapPos);
 							break;
@@ -117,6 +121,11 @@ public class MapController : MonoBehaviour {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(hardLightningBlock, vPos, Quaternion.identity);
 			HardObjectController h = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardObjectController>();
 			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			l.conductForward = true;
+			l.conductBack = true;
+			l.acceptAll = true;
 			if (always) {
 				l.lightning = true;
 				l.lightningSwitch = true;
@@ -138,16 +147,34 @@ public class MapController : MonoBehaviour {
 		} else if (objName == ("MovableLightningBlock")) {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningBlock, vPos, Quaternion.identity);
 			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			l.conductForward = true;
+			l.conductBack = true;
 			if (always) {
-				LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 				l.lightning = true;
 				l.lightningSwitch = true;
 				l.always = true;
 			}
 			b.nowPos = mapPos;
-		} else if (objName == ("Gate")) {
+		} else if (objName == ("MovableLightningIBlock")) {
+			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningIBlock, vPos, Quaternion.identity);
+			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			if (always) {
+				l.lightning = true;
+				l.lightningSwitch = true;
+				l.always = true;
+			}
+			b.nowPos = mapPos;
+		}	else if (objName == ("Gate")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(gate, vPos, Quaternion.identity);
 			GateController g = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<GateController>();
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.acceptAll = true;
 			g.nowPos = mapPos;
 		} else if (objName == ("InvisibleBlock")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(invisibleBlock, vPos, Quaternion.identity);
@@ -163,6 +190,8 @@ public class MapController : MonoBehaviour {
 			b.nowPos = mapPos;
 		} else if (objName == ("Teleporter")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporter, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.acceptAll = true;
 			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
 			t.nowPos = mapPos;
 			t.portNum = teleportNum;

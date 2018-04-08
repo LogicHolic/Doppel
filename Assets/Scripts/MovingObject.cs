@@ -14,6 +14,8 @@ public class MovingObject : MapObject {
   protected int stayCount = 0;
 
   public bool isTeleported;
+  public Vector3 direction;
+
 
   //最終的な移動先をmap上の動きのみから算出した座標に修正
   public Vector3 ModifyPos(MapPos mapPos) {
@@ -31,7 +33,6 @@ public class MovingObject : MapObject {
   protected IEnumerator Move(Vector3 direc, int MOVE_STEPS = 15) {
     isMoving = true;
     isTeleported = false;
-    transform.localRotation = Quaternion.LookRotation(direc);
 
     //現在地をnullに
     moMap[nowPos.floor, nowPos.x, nowPos.z] = null;
@@ -40,8 +41,11 @@ public class MovingObject : MapObject {
     //移動先に自身を代入
     moMap[nowPos.floor, nowPos.x, nowPos.z] = gameObject;
 
+    if (gameObject.tag.Contains("Player") || gameObject.tag.Contains("Doppel")) {
+      transform.localRotation = Quaternion.LookRotation(direc);
+    }
     for (int i = 0; i < MOVE_STEPS; i++) {
-      transform.Translate(Vector3.forward / MOVE_STEPS);
+      transform.Translate(direc / MOVE_STEPS, Space.World);
       stayCount = 0;
       yield return null;
     }
@@ -85,7 +89,7 @@ public class MovingObject : MapObject {
     }
   }
 
-  protected IEnumerator Fall(int MOVE_STEPS = 15) {
+  protected IEnumerator Fall(int MOVE_STEPS = 20) {
     isMoving = true;
     moMap[nowPos.floor, nowPos.x, nowPos.z] = null;
     for (int i = 0; i < MOVE_STEPS * 10; i++) {
@@ -93,6 +97,22 @@ public class MovingObject : MapObject {
       yield return null;
     }
     GameObject.DestroyImmediate(gameObject);
+  }
+
+  public void Rotate() {
+    if (direction == Vector3.forward) {
+      transform.localRotation = Quaternion.LookRotation(Vector3.right);
+      direction = Vector3.right;
+    } else if (direction == Vector3.right) {
+      transform.localRotation = Quaternion.LookRotation(Vector3.back);
+      direction = Vector3.back;
+    } else if (direction == Vector3.back) {
+      transform.localRotation = Quaternion.LookRotation(Vector3.left);
+      direction = Vector3.left;
+    } else if (direction == Vector3.left) {
+      transform.localRotation = Quaternion.LookRotation(Vector3.forward);
+      direction = Vector3.forward;
+    }
   }
 
 

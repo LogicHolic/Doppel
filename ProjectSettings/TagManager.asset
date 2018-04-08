@@ -16,6 +16,7 @@ TagManager:
   - Ice,Movable
   - Gate, Lightning
   - Teleporter,Lightning
+  - Movable,Lightning,Rotatable
   layers:
   - Default
   - TransparentFX

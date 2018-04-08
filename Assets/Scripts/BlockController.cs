@@ -14,7 +14,7 @@ public class BlockController : MovingObject {
 
 	// Use this for initialization
 	void Start () {
-
+		direction = Vector3.forward;
 	}
 
 	// Update is called once per frame

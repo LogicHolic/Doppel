@@ -18,8 +18,14 @@ public class PlayerController : MovingObject {
   public void PlayerMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = moMap[nextPos.floor, nextPos.x, nextPos.z];
-    transform.localRotation = Quaternion.LookRotation(direc);
 
+    if (direc != direction) {
+      transform.localRotation = Quaternion.LookRotation(direc);
+      direction = direc;
+      stayCount = 0;
+      return;
+    }
+    direction = direc;
     if (isViable(nextPos)) {
       animator.SetBool(key_walk, true);
       //現在地をnullに
@@ -69,6 +75,7 @@ public class PlayerController : MovingObject {
 
   void Start()
   {
+    direction = Vector3.forward;
     animator = GetComponent<Animator>();
   }
 
@@ -81,7 +88,7 @@ public class PlayerController : MovingObject {
     if (!isMoving) {
       animator.SetBool(key_walk, false);
     }
-    if (!isMoving && !isDoppelMoving() && !gameOver && stayCount >= 3) {
+    if (!isMoving && !isDoppelMoving() && !gameOver && stayCount >= 8) {
       MapPos beneath = nowPos + new MapPos(-1, 0, 0);
       if (beneath.floor < 0 || goMap[beneath.floor, beneath.x, beneath.z] == null) {
         StartCoroutine(Fall());
@@ -103,7 +110,27 @@ public class PlayerController : MovingObject {
         PlayerMove(Vector3.right);
         MoveDoppels(Vector3.left);
       }
+      else if (Input.GetKeyDown(KeyCode.F)) {
+        RotateObject();
+      }
     }
     animator.SetInteger(key_erapse, stayCount);
+  }
+  void RotateObject() {
+    MapPos n = GetNextPos(nowPos, direction);
+    GameObject nObj1 = goMap[n.floor, n.x, n.z];
+    GameObject nObj2 = moMap[n.floor, n.x, n.z];
+    if (nObj1 != null && nObj1.tag.Contains("Rotatable")) {
+      LightningController l = nObj1.GetComponent<LightningController>();
+      BlockController b = nObj1.GetComponent<BlockController>();
+      b.Rotate();
+      l.Rotate();
+    }
+    if (nObj2 != null && nObj2.tag.Contains("Rotatable")) {
+      LightningController l = nObj2.GetComponent<LightningController>();
+      BlockController b = nObj2.GetComponent<BlockController>();
+      b.Rotate();
+      l.Rotate();
+    }
   }
 }
