@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114492732067489384}
   m_Layer: 0
   m_Name: MovableBlock
-  m_TagString: Movable
+  m_TagString: Movable,Reflection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,3 +108,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
+  isTeleported: 0
+  direction: {x: 0, y: 0, z: 0}

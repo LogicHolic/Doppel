@@ -18,6 +18,7 @@ public class MapController : MonoBehaviour {
 	public GameObject doppel;
 	public GameObject gate;
 	public GameObject teleporter;
+	public GameObject movableLaserBlock;
 	public GameObject invisibleBlock;
 
 	public int teleportNum;
@@ -95,6 +96,9 @@ public class MapController : MonoBehaviour {
 							break;
 						case 11:
 							Create("MovableLightningIBlock", mapPos);
+							break;
+						case 12:
+							Create("MovableLaserBlock", mapPos);
 							break;
 						case 100:
 							Create("Player", mapPos);
@@ -198,6 +202,10 @@ public class MapController : MonoBehaviour {
 			t.color = 1;
 			teleporters[teleportNum,1] = t;
 			teleportNum++;
+		} else if (objName == ("MovableLaserBlock")) {
+			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLaserBlock, vPos, Quaternion.identity);
+			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			b.nowPos = mapPos;
 		}
 	}
 
