@@ -84,4 +84,4 @@ MonoBehaviour:
     audioTargetBitrate: 128000
     audioFlags: 6
     audioMaxTasks: 4
-  m_AutoSelectBR: 1
+  m_AutoSelectBR: 0

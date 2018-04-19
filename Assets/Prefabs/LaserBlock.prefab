@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114276271202019110}
   m_Layer: 0
   m_Name: LaserBlock
-  m_TagString: Movable
+  m_TagString: Movable,Reflection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

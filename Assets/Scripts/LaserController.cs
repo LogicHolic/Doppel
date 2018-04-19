@@ -10,6 +10,7 @@ public class LaserController : MapObject {
 	private Vector3 dv;
 	private char laserSurface;
 	private char laserDirec;
+	private Vector3 unityNowPos;
 	private List<SurfacePos> searchedSP;
 
 	struct SurfacePos {
@@ -50,6 +51,7 @@ public class LaserController : MapObject {
 
 	// Update is called once per frame
 	void Update () {
+		unityNowPos = transform.position;
 		BlockController b = gameObject.GetComponent<BlockController>();
 		nowPos = b.nowPos;
 		searchedSP = new List<SurfacePos>();
@@ -215,6 +217,7 @@ public class LaserController : MapObject {
 		LineRenderer line = obj.AddComponent<LineRenderer>();
 
 		Vector3 firstPos = MapposToUnipos(pos);
+		firstPos = ModifyToRealPos(firstPos);
 		if (surface == 'f') {
 			firstPos += new Vector3(0,0.5f,0.5f);
 		} else if (surface == 'l') {
@@ -236,6 +239,10 @@ public class LaserController : MapObject {
 		// Debug.Log(direc);
 		// Debug.Log("EndCreateLine");
 	}
+	Vector3 ModifyToRealPos(Vector3 vPos) {
+		Vector3 nowVPos = MapposToUnipos(nowPos);
+		return vPos + (unityNowPos - nowVPos);
+	}
 
 	void CreateInfinityLine(MapPos pos, char surface, Vector3 direc) {
 		GameObject obj = new GameObject();
@@ -245,6 +252,7 @@ public class LaserController : MapObject {
 		LineRenderer line = obj.AddComponent<LineRenderer>();
 
 		Vector3 firstPos = MapposToUnipos(pos);
+		firstPos = ModifyToRealPos(firstPos);
 		if (surface == 'f') {
 			firstPos += new Vector3(0,0.5f,0.5f);
 		} else if (surface == 'l') {
