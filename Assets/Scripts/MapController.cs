@@ -129,7 +129,8 @@ public class MapController : MonoBehaviour {
 			l.conductRight = true;
 			l.conductForward = true;
 			l.conductBack = true;
-			l.acceptAll = true;
+			l.conductUp = true;
+			l.conductDown = true;
 			if (always) {
 				l.lightning = true;
 				l.lightningSwitch = true;
@@ -156,6 +157,8 @@ public class MapController : MonoBehaviour {
 			l.conductRight = true;
 			l.conductForward = true;
 			l.conductBack = true;
+			l.conductUp = true;
+			l.conductDown = true;
 			if (always) {
 				l.lightning = true;
 				l.lightningSwitch = true;

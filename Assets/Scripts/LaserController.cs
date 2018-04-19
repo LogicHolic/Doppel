@@ -169,7 +169,14 @@ public class LaserController : MapObject {
 				CreateInfinityLine(pos, surfaceChar, direc2);
 				return false;
 			}
-			if (ObjectCheck(pos1)) {
+			if (LightningObjectCheck(pos1)) {
+				FrontReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
+				if (EnlightenObject(pos1, newSurfaceChar)) {
+					CreateLine(pos, surfaceChar, direc2, length);
+					return false;
+				}
+			}
+			if (ReflectionObjectCheck(pos1)) {
 				FrontReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
 				CreateLine(pos, surfaceChar, direc2, length);
 				if (searchedSP.Contains(new SurfacePos(pos1, newSurfaceChar))) {
@@ -184,7 +191,14 @@ public class LaserController : MapObject {
 				CreateInfinityLine(pos, surfaceChar, direc2);
 				return false;
 			}
-			if (ObjectCheck(pos2)) {
+			if (LightningObjectCheck(pos2)) {
+				SideReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
+				if (EnlightenObject(pos2, newSurfaceChar)) {
+					CreateLine(pos, surfaceChar, direc2, length);
+					return false;
+				}
+			}
+			if (ReflectionObjectCheck(pos2)) {
 				SideReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
 				CreateLine(pos, surfaceChar, direc2, length);
 				if (searchedSP.Contains(new SurfacePos(pos2, newSurfaceChar))) {
@@ -200,7 +214,45 @@ public class LaserController : MapObject {
 		return true;
 	}
 
-	bool ObjectCheck(MapPos pos) {
+	bool EnlightenObject(MapPos pos, char surface) {
+		Vector3 d = Vector3.zero;
+		if (surface == 'f') {
+			d = Vector3.forward;
+		} else if (surface == 'l') {
+			d = Vector3.left;
+		} else if (surface == 'b') {
+			d = Vector3.back;
+		} else if (surface == 'r') {
+			d = Vector3.right;
+		}
+		if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+			LightningController l = goMap[pos.floor, pos.x, pos.z].GetComponent<LightningController>();
+			if (l.Accept(d)) {
+				l.laserLightning = true;
+				return true;
+			}
+		}
+		if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+			LightningController l = moMap[pos.floor, pos.x, pos.z].GetComponent<LightningController>();
+			if (l.Accept(d)) {
+				l.laserLightning = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool LightningObjectCheck(MapPos pos) {
+		if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+			return true;
+		}
+		if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+			return true;
+		}
+		return false;
+	}
+
+	bool ReflectionObjectCheck(MapPos pos) {
 		if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].tag.Contains("Reflection")) {
 			return true;
 		}
@@ -208,6 +260,27 @@ public class LaserController : MapObject {
 			return true;
 		}
 		return false;
+	}
+
+	int ObjectCheck(MapPos pos) {
+		// 1 = 反射	 2 = 光るオブジェクト  0 = その他
+		if (goMap[pos.floor, pos.x, pos.z] != null) {
+			if (goMap[pos.floor, pos.x, pos.z].tag.Contains("Reflection")) {
+				return 1;
+			} else if (goMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+				return 2;
+			}
+			return 0;
+		}
+		if (moMap[pos.floor, pos.x, pos.z] != null) {
+			if (moMap[pos.floor, pos.x, pos.z].tag.Contains("Reflection")) {
+				return 1;
+			} else if (moMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
+				return 2;
+			}
+			return 0;
+		}
+		return 0;
 	}
 	void CreateLine(MapPos pos, char surface, Vector3 direc, int length) {
 		GameObject obj = new GameObject();
@@ -238,6 +311,7 @@ public class LaserController : MapObject {
 		// Debug.Log(firstPos);
 		// Debug.Log(direc);
 		// Debug.Log("EndCreateLine");
+
 	}
 	Vector3 ModifyToRealPos(Vector3 vPos) {
 		Vector3 nowVPos = MapposToUnipos(nowPos);
@@ -269,11 +343,6 @@ public class LaserController : MapObject {
 		line.SetVertexCount(2);
 		line.SetPosition(0, firstPos);
 		line.SetPosition(1, firstPos + direc * 1000);
-
-		// Debug.Log("CreateInfinityLine");
-		// Debug.Log(firstPos);
-		// Debug.Log(direc);
-		// Debug.Log("EndCreateInfinityLine");
 	}
 
 	void CreateLines(Vector3[] vertices) {

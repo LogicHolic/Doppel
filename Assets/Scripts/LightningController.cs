@@ -16,11 +16,15 @@ public class LightningController : MonoBehaviour {
 	public bool lightning;
 	//光るという指令or消えるという指令を受けている
 	public bool lightningSwitch;
+	//laserを受けている
+	public bool laserLightning;
 	private bool isMoving;
 	//playerまたはdoppelが乗っている
 
+
 	public bool connectAlways;
 	public bool always = false;
+	private bool temporaryAlways;
 	private List<MapPos> searchedList;
 
 	Vector3[] d = new Vector3[]{Vector3.forward, Vector3.left, Vector3.right, Vector3.back};
@@ -37,8 +41,8 @@ public class LightningController : MonoBehaviour {
 	public bool conductRight;
 	public bool conductForward;
 	public bool conductBack;
-	public bool conductUp = true;
-	public bool conductDown = true;
+	public bool conductUp;
+	public bool conductDown;
 	public bool acceptAll;
 
 	// Use this for initialization
@@ -76,6 +80,10 @@ public class LightningController : MonoBehaviour {
 			}
 			SetLPColor(currentColor);
 		}
+
+		if (!always) {
+			temporaryAlways = true;
+		}
 	}
 
 	// Update is called once per frame
@@ -92,6 +100,16 @@ public class LightningController : MonoBehaviour {
 		}
 
 		if (!gameOver) {
+			if (temporaryAlways) {
+				if (laserLightning) {
+					lightningSwitch = true;
+					if (lightning) {
+						always = true;
+					}
+				} else {
+					always = false;
+				}
+			}
 			if (objectTag == 'g' && g.objectIsOn) {
 				connectAlways = true;
 				lightningSwitch = true;
@@ -143,6 +161,7 @@ public class LightningController : MonoBehaviour {
 
 			//毎フレームステータスを更新するためfalseに
 			connectAlways = false;
+			laserLightning = false;
 		}
 	}
 
