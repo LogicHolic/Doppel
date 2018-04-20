@@ -22,8 +22,7 @@ GameObject:
   - component: {fileID: 33872392912013250}
   - component: {fileID: 65333582634886284}
   - component: {fileID: 23500493921335122}
-  - component: {fileID: 114942989325687966}
-  - component: {fileID: 114542969884993254}
+  - component: {fileID: 114679434526703738}
   m_Layer: 0
   m_Name: HardIceBlock
   m_TagString: Ice,Hard
@@ -97,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114542969884993254
+--- !u!114 &114679434526703738
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -108,16 +107,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e48c40554748f41adc3b39feae2174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114942989325687966
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1444984068745648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 175a14f57bf592e4f8a0309df459e6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Lmat: {fileID: 2100000, guid: aa8ec0d434dbafb4fa871dc541826a1d, type: 2}
-  Dmat: {fileID: 2100000, guid: 8a638a4ffe8e4c5478078bf5f13622b5, type: 2}

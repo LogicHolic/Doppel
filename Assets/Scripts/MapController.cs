@@ -12,6 +12,7 @@ public class MapController : MonoBehaviour {
 	public GameObject movableBlock;
 	public GameObject movableLightningBlock;
 	public GameObject movableLightningIBlock;
+	public GameObject movableLightningLBlock;
 	public GameObject hardIceBlock;
 	public GameObject movableIceBlock;
 	public GameObject player;
@@ -100,6 +101,9 @@ public class MapController : MonoBehaviour {
 						case 12:
 							Create("MovableLaserBlock", mapPos);
 							break;
+						case 13:
+							Create("MovableLightningLBlock", mapPos);
+							break;
 						case 100:
 							Create("Player", mapPos);
 							break;
@@ -170,6 +174,18 @@ public class MapController : MonoBehaviour {
 			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.conductLeft = true;
+			l.conductRight = true;
+			if (always) {
+				l.lightning = true;
+				l.lightningSwitch = true;
+				l.always = true;
+			}
+			b.nowPos = mapPos;
+		}  else if (objName == ("MovableLightningLBlock")) {
+			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningLBlock, vPos, Quaternion.identity);
+			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductForward = true;
 			l.conductRight = true;
 			if (always) {
 				l.lightning = true;
