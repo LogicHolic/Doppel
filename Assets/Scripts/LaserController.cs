@@ -176,6 +176,11 @@ public class LaserController : MapObject {
 					return false;
 				}
 			}
+			if (AbsorbObjectCheck(pos1)) {
+				FrontReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
+				CreateLine(pos, surfaceChar, direc2, length);
+				return false;
+			}
 			if (ReflectionObjectCheck(pos1)) {
 				FrontReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
 				CreateLine(pos, surfaceChar, direc2, length);
@@ -197,6 +202,11 @@ public class LaserController : MapObject {
 					CreateLine(pos, surfaceChar, direc2, length);
 					return false;
 				}
+			}
+			if (AbsorbObjectCheck(pos2)) {
+				SideReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
+				CreateLine(pos, surfaceChar, direc2, length);
+				return false;
 			}
 			if (ReflectionObjectCheck(pos2)) {
 				SideReflection(direcChar, surfaceChar, ref newDirecChar, ref newSurfaceChar);
@@ -262,6 +272,16 @@ public class LaserController : MapObject {
 		return false;
 	}
 
+	bool AbsorbObjectCheck(MapPos pos) {
+		if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].tag.Contains("Absorb")) {
+			return true;
+		}
+		if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].tag.Contains("Absorb")) {
+			return true;
+		}
+		return false;
+	}
+
 	int ObjectCheck(MapPos pos) {
 		// 1 = 反射	 2 = 光るオブジェクト  0 = その他
 		if (goMap[pos.floor, pos.x, pos.z] != null) {
@@ -307,12 +327,8 @@ public class LaserController : MapObject {
 		line.SetVertexCount(2);
 		line.SetPosition(0, firstPos);
 		line.SetPosition(1, firstPos + direc * (float)(length * 0.5));
-		// Debug.Log("CreateLine");
-		// Debug.Log(firstPos);
-		// Debug.Log(direc);
-		// Debug.Log("EndCreateLine");
-
 	}
+
 	Vector3 ModifyToRealPos(Vector3 vPos) {
 		Vector3 nowVPos = MapposToUnipos(nowPos);
 		return vPos + (unityNowPos - nowVPos);

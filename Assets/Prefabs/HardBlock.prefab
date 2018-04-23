@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114619073056389672}
   m_Layer: 0
   m_Name: HardBlock
-  m_TagString: Hard
+  m_TagString: Hard,Absorb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4bf86f13704c78d4191f3630024ffc0a, type: 2}
+  - {fileID: 2100000, guid: 5502d05ca55ea7946829ba3dcd757d10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 114833720880529638}
   m_Layer: 0
   m_Name: HardLightningBlock
-  m_TagString: Hard,Lightning
+  m_TagString: Hard,Lightning,Absorb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -977,6 +977,7 @@ MonoBehaviour:
   isLightning: 0
   lightning: 0
   lightningSwitch: 0
+  laserLightning: 0
   connectAlways: 0
   always: 0
   conductLeft: 0

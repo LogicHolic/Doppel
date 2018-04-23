@@ -90,7 +90,6 @@ public class LightningController : MonoBehaviour {
 	void Update () {
 		if (objectTag == 'b') {
 			nowPos = b.nowPos;
-			// isMoving = b.isMoving;
 		} else if (objectTag == 'g') {
 			nowPos = g.nowPos;
 		} else if (objectTag == 'h') {
