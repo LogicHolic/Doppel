@@ -24,9 +24,10 @@ GameObject:
   - component: {fileID: 23743125686448180}
   - component: {fileID: 114867881117291522}
   - component: {fileID: 114276271202019110}
+  - component: {fileID: 114107409691898240}
   m_Layer: 0
   m_Name: LaserBlock
-  m_TagString: Movable,Reflection
+  m_TagString: Movable,Reflection,Lightning,Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +98,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114107409691898240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445043970140990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8b70fabd4ca2343a781dbef2deb32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
+  lightColor: {r: 0, g: 0, b: 0, a: 0}
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  isLightning: 0
+  lightning: 0
+  lightningSwitch: 0
+  laserLightning: 0
+  connectAlways: 0
+  always: 0
+  conductLeft: 0
+  conductRight: 0
+  conductForward: 0
+  conductBack: 0
+  conductUp: 0
+  conductDown: 0
+  acceptAll: 0
 --- !u!114 &114276271202019110
 MonoBehaviour:
   m_ObjectHideFlags: 1

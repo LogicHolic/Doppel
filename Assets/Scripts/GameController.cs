@@ -11,12 +11,16 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (gameOver) {
-			GameOver();
+		if (doppelTouchPlayer) {
+			gameOver = true;
+			stageClear = true;
+			GameClear();
 		}
 	}
 
+	void GameClear(){
 
+	}
 
 	void GameOver(){
 

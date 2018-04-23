@@ -15,7 +15,7 @@ public class PlayerController : MovingObject {
   private const string key_erapse = "erapsed";
 
 
-  public void PlayerMove(Vector3 direc) {
+  public bool PlayerMove(Vector3 direc) {
     MapPos nextPos = GetNextPos(nowPos, direc);
     nextObj = moMap[nextPos.floor, nextPos.x, nextPos.z];
 
@@ -23,7 +23,7 @@ public class PlayerController : MovingObject {
       transform.localRotation = Quaternion.LookRotation(direc);
       direction = direc;
       stayCount = 0;
-      return;
+      return false;
     }
     direction = direc;
     if (isViable(nextPos)) {
@@ -42,6 +42,7 @@ public class PlayerController : MovingObject {
       //   stayCnt = 0;
       // }
     }
+    return true;
   }
 
   void MoveDoppels(Vector3 direc) {
@@ -95,20 +96,20 @@ public class PlayerController : MovingObject {
         gameOver = true;
       }
       else if (Input.GetKey(KeyCode.A)) {
-        PlayerMove(Vector3.left);
-        MoveDoppels(Vector3.right);
+        if (PlayerMove(Vector3.left))
+          MoveDoppels(Vector3.right);
       }
       else if (Input.GetKey(KeyCode.W)) {
-        PlayerMove(Vector3.forward);
-        MoveDoppels(Vector3.back);
+        if (PlayerMove(Vector3.forward))
+          MoveDoppels(Vector3.back);
       }
       else if (Input.GetKey(KeyCode.S)) {
-        PlayerMove(Vector3.back);
-        MoveDoppels(Vector3.forward);
+        if (PlayerMove(Vector3.back))
+          MoveDoppels(Vector3.forward);
       }
       else if (Input.GetKey(KeyCode.D)) {
-        PlayerMove(Vector3.right);
-        MoveDoppels(Vector3.left);
+        if (PlayerMove(Vector3.right))
+          MoveDoppels(Vector3.left);
       }
       else if (Input.GetKeyDown(KeyCode.F)) {
         RotateObject();

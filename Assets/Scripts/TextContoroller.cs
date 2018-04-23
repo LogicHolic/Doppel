@@ -14,10 +14,11 @@ public class TextContoroller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(gameOver) {
-			tm.text = "GameOver";
-		}
-		if (stageClear) {
-			tm.text = "StageClear";
+			if (stageClear) {
+				tm.text = "StageClear";
+			} else {
+				tm.text = "GameOver";
+			}
 		}
 	}
 }

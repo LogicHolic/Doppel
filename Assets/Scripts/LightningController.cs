@@ -34,6 +34,7 @@ public class LightningController : MonoBehaviour {
 	private HardObjectController h;
 	private GateController g;
 	private TeleporterController t;
+	private LaserController ls;
 	private MapPos nowPos;
 	private char objectTag;
 
@@ -51,7 +52,11 @@ public class LightningController : MonoBehaviour {
 		h = gameObject.GetComponent<HardObjectController>();
 		g = gameObject.GetComponent<GateController>();
 		t = gameObject.GetComponent<TeleporterController>();
-		if (gameObject.tag.Contains("Movable")) {
+		ls = gameObject.GetComponent<LaserController>();
+
+		if (gameObject.tag.Contains("Laser")) {
+			objectTag = 'l';
+		} else if (gameObject.tag.Contains("Movable")) {
 			objectTag = 'b';
 			lightColor = new Color(1, 0, 0, 0);
 			if (always) {
@@ -68,11 +73,12 @@ public class LightningController : MonoBehaviour {
 		} else if (gameObject.tag.Contains("Teleporter")) {
 			objectTag = 't';
 		}
+
 		normalColor = new Color(0.1f, 0.1f, 0.1f, 0);
 
 		lightningPart = transform.Find("LightningPart");
 
-		if (objectTag != 'g' && objectTag != 't') {
+		if (objectTag != 'g' && objectTag != 't' && objectTag != 'l') {
 			if (lightning) {
 				currentColor = lightColor;
 			} else {
@@ -96,6 +102,8 @@ public class LightningController : MonoBehaviour {
 			nowPos = h.nowPos;
 		} else if (objectTag == 't') {
 			nowPos = t.nowPos;
+		} else if (objectTag == 'l') {
+			nowPos = b.nowPos;
 		}
 
 		if (!gameOver) {
@@ -120,7 +128,7 @@ public class LightningController : MonoBehaviour {
 					if (!g.objectIsOn) {
 						StartCoroutine(g.GateOpen());
 					}
-				} else if (objectTag == 't') {
+				} else if (objectTag == 't' || objectTag == 'l') {
 					lightning = true;
 				} else {
 					StartCoroutine(GradLightning(currentColor, lightColor, true));
@@ -131,7 +139,7 @@ public class LightningController : MonoBehaviour {
 					if (!g.objectIsOn) {
 						StartCoroutine(g.GateClose());
 					}
-				} else if (objectTag == 't') {
+				} else if (objectTag == 't' || objectTag == 'l') {
 					lightning = false;
 				} else {
 					StartCoroutine(GradLightning(currentColor, normalColor, false));
@@ -144,7 +152,7 @@ public class LightningController : MonoBehaviour {
 			}
 
 			if (!always && !connectAlways) {
-				if (objectTag != 'g' && objectTag != 't') {
+				if (objectTag != 'g' && objectTag != 't' && objectTag != 'l') {
 					currentColor = normalColor;
 					SetLPColor(currentColor);
 					lightning = false;
@@ -154,7 +162,7 @@ public class LightningController : MonoBehaviour {
 					lightningSwitch = false;
 				}
 			}
-			if (!isLightning && lightning && objectTag != 'g' && objectTag != 't') {
+			if (!isLightning && lightning && objectTag != 'g' && objectTag != 't'&& objectTag != 'l') {
 				SpreadLightning();
 			}
 

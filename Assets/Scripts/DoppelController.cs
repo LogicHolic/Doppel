@@ -26,6 +26,7 @@ public class DoppelController : MovingObject {
       GameObject moveBlock = nextObj;
       BlockController b = moveBlock.GetComponent<BlockController>();
       b.BlockMove(direc);
+      transform.localRotation = Quaternion.LookRotation(direc);
       stayCount = 0;
       // nextPos = GetNextPos(nowPos, direc);
       // if (isViable(nextPos)) {
@@ -50,9 +51,6 @@ public class DoppelController : MovingObject {
   // Update is called once per frame
   void Update () {
     stayCount++;
-    if (!isMoving && doppelTouchPlayer) {
-      gameOver = true;
-    }
 
     if (!isMoving && exist) {
       animator.SetBool(key_walk, false);

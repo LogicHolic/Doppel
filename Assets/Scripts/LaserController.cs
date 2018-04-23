@@ -13,6 +13,7 @@ public class LaserController : MapObject {
 	private Vector3 unityNowPos;
 	private List<SurfacePos> searchedSP;
 	private List<GameObject> previousFrameLines;
+	private LightningController lCon;
 
 	struct SurfacePos {
 		MapPos pos;
@@ -49,6 +50,7 @@ public class LaserController : MapObject {
 		laserObj.transform.parent = transform;
 		laserObj.transform.localPosition = new Vector3(0, 0.5f, 0.5f);
 		previousFrameLines = new List<GameObject>();
+		lCon = gameObject.GetComponent<LightningController>();
 	}
 
 	// Update is called once per frame
@@ -61,7 +63,9 @@ public class LaserController : MapObject {
 		foreach (GameObject g in previousFrameLines) {
 			GameObject.DestroyImmediate(g);
 		}
-		CalculateTrack();
+		if (lCon.lightning) {
+			CalculateTrack();
+		}
 	}
 
 	void CreateDirection(char direc, char surface, ref Vector3 direc1, ref Vector3 direc2) {

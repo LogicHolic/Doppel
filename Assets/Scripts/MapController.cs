@@ -225,6 +225,8 @@ public class MapController : MonoBehaviour {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLaserBlock, vPos, Quaternion.identity);
 			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			b.nowPos = mapPos;
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.acceptAll = true;
 		}
 	}
 
