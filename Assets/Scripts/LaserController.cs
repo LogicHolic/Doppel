@@ -12,6 +12,7 @@ public class LaserController : MapObject {
 	private char laserDirec;
 	private Vector3 unityNowPos;
 	private List<SurfacePos> searchedSP;
+	private List<GameObject> previousFrameLines;
 
 	struct SurfacePos {
 		MapPos pos;
@@ -47,6 +48,7 @@ public class LaserController : MapObject {
 		GameObject laserObj = Instantiate(laser, laserPos, Quaternion.identity);
 		laserObj.transform.parent = transform;
 		laserObj.transform.localPosition = new Vector3(0, 0.5f, 0.5f);
+		previousFrameLines = new List<GameObject>();
 	}
 
 	// Update is called once per frame
@@ -55,10 +57,9 @@ public class LaserController : MapObject {
 		BlockController b = gameObject.GetComponent<BlockController>();
 		nowPos = b.nowPos;
 		searchedSP = new List<SurfacePos>();
-		foreach (Transform child in transform) {
-			if (child.gameObject.name == "laserLine") {
-				GameObject.DestroyImmediate(child.gameObject);
-			}
+
+		foreach (GameObject g in previousFrameLines) {
+			GameObject.DestroyImmediate(g);
 		}
 		CalculateTrack();
 	}
@@ -282,32 +283,13 @@ public class LaserController : MapObject {
 		return false;
 	}
 
-	int ObjectCheck(MapPos pos) {
-		// 1 = 反射	 2 = 光るオブジェクト  0 = その他
-		if (goMap[pos.floor, pos.x, pos.z] != null) {
-			if (goMap[pos.floor, pos.x, pos.z].tag.Contains("Reflection")) {
-				return 1;
-			} else if (goMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
-				return 2;
-			}
-			return 0;
-		}
-		if (moMap[pos.floor, pos.x, pos.z] != null) {
-			if (moMap[pos.floor, pos.x, pos.z].tag.Contains("Reflection")) {
-				return 1;
-			} else if (moMap[pos.floor, pos.x, pos.z].tag.Contains("Lightning")) {
-				return 2;
-			}
-			return 0;
-		}
-		return 0;
-	}
 	void CreateLine(MapPos pos, char surface, Vector3 direc, int length) {
 		GameObject obj = new GameObject();
 		obj.transform.parent = transform;
 		obj.transform.localPosition = Vector3.zero;
 		obj.name = "laserLine";
 		LineRenderer line = obj.AddComponent<LineRenderer>();
+		previousFrameLines.Add(obj);
 
 		Vector3 firstPos = MapposToUnipos(pos);
 		firstPos = ModifyToRealPos(firstPos);
@@ -340,6 +322,7 @@ public class LaserController : MapObject {
 		obj.transform.localPosition = Vector3.zero;
 		obj.name = "laserLine";
 		LineRenderer line = obj.AddComponent<LineRenderer>();
+		previousFrameLines.Add(obj);
 
 		Vector3 firstPos = MapposToUnipos(pos);
 		firstPos = ModifyToRealPos(firstPos);
