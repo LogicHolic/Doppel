@@ -60,28 +60,24 @@ public class MovingObject : MapObject {
     bool move = false;
     if ( (uObj != null  && isViable(nextPos))
     && (gameObject.tag.Contains("Ice") || uObj.tag.Contains("Ice")) ){
-      if (gameObject.tag.Contains("Ice")) {
-        move = true;
-        GameObject obj = goMap[nowPos.floor, nowPos.x, nowPos.z];
-        if (obj != null && obj.tag.Contains("Teleporter")) {
-          TeleporterController t = obj.GetComponent<TeleporterController>();
-          LightningController l = obj.GetComponent<LightningController>();
-          if (l.lightning) {
-            if (t.portNum == 0) {
-              LightningController l1 = teleporters[1, t.color].gameObject.GetComponent<LightningController>();
-              if (l1.lightning) {
-                move = false;
-              }
-            } else {
-              LightningController l0 = teleporters[0, t.color].gameObject.GetComponent<LightningController>();
-              if (l0.lightning) {
-                move = false;
-              }
+      move = true;
+      GameObject obj = goMap[nowPos.floor, nowPos.x, nowPos.z];
+      if (obj != null && obj.tag.Contains("Teleporter")) {
+        TeleporterController t = obj.GetComponent<TeleporterController>();
+        LightningController l = obj.GetComponent<LightningController>();
+        if (l.lightning) {
+          if (t.portNum == 0) {
+            LightningController l1 = teleporters[1, t.color].gameObject.GetComponent<LightningController>();
+            if (l1.lightning) {
+              move = false;
+            }
+          } else {
+            LightningController l0 = teleporters[0, t.color].gameObject.GetComponent<LightningController>();
+            if (l0.lightning) {
+              move = false;
             }
           }
         }
-      } else {
-        move = true;
       }
     }
     if (move) {
