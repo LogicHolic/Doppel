@@ -5,7 +5,7 @@ using Game;
 using static Game.MapStatic;
 
 public class TeleporterController : MapObject {
-	// 1 = green
+	// 0 = green,	1 = red, 2 = blue
 	public int color;
 	public int portNum;
 

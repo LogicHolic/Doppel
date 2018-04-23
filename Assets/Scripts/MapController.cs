@@ -18,11 +18,15 @@ public class MapController : MonoBehaviour {
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject gate;
-	public GameObject teleporter;
+	public GameObject teleporterGreen;
+	public GameObject teleporterRed;
+	public GameObject teleporterBlue;
 	public GameObject movableLaserBlock;
 	public GameObject invisibleBlock;
 
-	public int teleportNum;
+	public int teleportNumG;
+	public int teleportNumR;
+	public int teleportNumB;
 
 	void Awake () {
 		//player生成
@@ -93,7 +97,7 @@ public class MapController : MonoBehaviour {
 							Create("Gate", mapPos);
 							break;
 						case 10:
-							Create("Teleporter", mapPos);
+							Create("TeleporterGreen", mapPos);
 							break;
 						case 11:
 							Create("MovableLightningIBlock", mapPos);
@@ -103,6 +107,15 @@ public class MapController : MonoBehaviour {
 							break;
 						case 13:
 							Create("MovableLightningLBlock", mapPos);
+							break;
+						case 20:
+							Create("TeleporterGreen", mapPos);
+							break;
+						case 21:
+							Create("TeleporterRed", mapPos);
+							break;
+						case 22:
+							Create("TeleporterBlue", mapPos);
 							break;
 						case 100:
 							Create("Player", mapPos);
@@ -211,16 +224,36 @@ public class MapController : MonoBehaviour {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableIceBlock, vPos, Quaternion.identity);
 			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
 			b.nowPos = mapPos;
-		} else if (objName == ("Teleporter")) {
-			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporter, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+		} else if (objName == ("TeleporterGreen")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporterGreen, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
 			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.acceptAll = true;
 			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
 			t.nowPos = mapPos;
-			t.portNum = teleportNum;
+			t.portNum = teleportNumG;
+			t.color = 0;
+			teleporters[teleportNumG,0] = t;
+			teleportNumG++;
+		} else if (objName == ("TeleporterRed")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporterRed, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.acceptAll = true;
+			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
+			t.nowPos = mapPos;
+			t.portNum = teleportNumR;
 			t.color = 1;
-			teleporters[teleportNum,1] = t;
-			teleportNum++;
+			teleporters[teleportNumR,1] = t;
+			teleportNumR++;
+		} else if (objName == ("TeleporterBlue")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(teleporterBlue, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.acceptAll = true;
+			TeleporterController t = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<TeleporterController>();
+			t.nowPos = mapPos;
+			t.portNum = teleportNumB;
+			t.color = 2;
+			teleporters[teleportNumB,2] = t;
+			teleportNumB++;
 		} else if (objName == ("MovableLaserBlock")) {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLaserBlock, vPos, Quaternion.identity);
 			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();

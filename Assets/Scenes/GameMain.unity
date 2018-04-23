@@ -200,7 +200,9 @@ MonoBehaviour:
   player: {fileID: 1647736719314870, guid: 4e3ea2bbbd114b543a02628a0fbd3fcf, type: 2}
   doppel: {fileID: 1404689488232606, guid: 533af93813111e2468c57430142bbe30, type: 2}
   gate: {fileID: 1303172810693852, guid: 968c7db565e6b394a8f5106b87a1bab8, type: 2}
-  teleporter: {fileID: 100004, guid: 53d818fe21816488e931816bd69d501e, type: 2}
+  teleporterGreen: {fileID: 100004, guid: 53d818fe21816488e931816bd69d501e, type: 2}
+  teleporterRed: {fileID: 100004, guid: edd9c0054f7cfb445916acefae4abe2f, type: 2}
+  teleporterBlue: {fileID: 100004, guid: 344c2f33dadf35f4f9b7390d6f224a0b, type: 2}
   movableLaserBlock: {fileID: 1445043970140990, guid: 375dd777996d88445bf1b9a20aa15dd9,
     type: 2}
   invisibleBlock: {fileID: 0}
