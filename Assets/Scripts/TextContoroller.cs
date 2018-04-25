@@ -17,7 +17,9 @@ public class TextContoroller : MonoBehaviour {
 			if (stageClear) {
 				tm.text = "StageClear";
 			} else {
-				tm.text = "GameOver";
+				if (!stageEdit) {
+					tm.text = "GameOver";
+				}
 			}
 		}
 	}

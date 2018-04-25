@@ -74,6 +74,10 @@ public class LightningController : MonoBehaviour {
 			objectTag = 't';
 		}
 
+		if (gameObject.tag.Contains("Battery")) {
+			lightColor = new Color (0, 1, 0, 0);
+		}
+
 		normalColor = new Color(0.1f, 0.1f, 0.1f, 0);
 
 		lightningPart = transform.Find("LightningPart");
@@ -87,7 +91,7 @@ public class LightningController : MonoBehaviour {
 			SetLPColor(currentColor);
 		}
 
-		if (!always) {
+		if (!always && !(gameObject.tag.Contains("Battery"))) {
 			temporaryAlways = true;
 		}
 	}
@@ -394,6 +398,9 @@ public class LightningController : MonoBehaviour {
 			}
 			currentColor = currentColor + grad;
 			SetLPColor(currentColor);
+			if (l && gameObject.tag.Contains("Battery")) {
+				always = true;
+			}
 			yield return null;
 		}
 	}

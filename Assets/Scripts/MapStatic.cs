@@ -64,6 +64,7 @@ namespace Game {
   public class GameStatic {
     public static bool gameOver = false;
     public static bool stageClear = false;
+    public static bool stageEdit = false;
     public static bool doppelTouchPlayer = false;
     public static bool[] goalFlag;
   }
@@ -84,59 +85,78 @@ namespace Game {
     // ブロックタイプ
     // 0　= nothing
     // 1 = hard
-    // 2 = hard & lightning
-    // 3 = hard & always
-    // 4 = movable
-    // 5 = movable & lightning
-    // 6 = movable & always
-    // 7 = hardIce
-    // 8 = movableIce
-    // 9 = gate
-    // 10 = teleporter
-    // 20 = invisible
-    // 100 = player
-    // 200 = doppel
+    // 2 = hardPower
+    // 3 = hardIce
+    // 11 = hardLightning(+)
+    // 12 = hardLightning(-)
+    // 13 = hardLightning(|)
+    // 14 = hardLightning(└)
+    // 15 = hardLightning(┌)
+    // 16 = hardLightning(┐)
+    // 17 = hardLightning(┘)
+    // 31 = hardLaser(fr)
+    // 32 = hardLaser(fl)
+    // 33 = hardLaser(rr)
+    // 34 = hardLaser(rl)
+    // 35 = hardLaser(br)
+    // 36 = hardLaser(bl)
+    // 37 = hardLaser(lr)
+    // 38 = hardLaser(ll)
+    // 51 = movable
+    // 52 = movablePower
+    // 53 = movableIce
+    // 61 = movableLightning(+)
+    // 62 = movableLightning(-)
+    // 63 = movableLightning(|)
+    // 64 = movableLightning(└)
+    // 65 = movableLightning(┌)
+    // 66 = movableLightning(┐)
+    // 67 = movableLightning(┘)
+    // 81 = movableLaser(fr)
+    // 82 = movableLaser(fl)
+    // 83 = movableLaser(rr)
+    // 84 = movableLaser(rl)
+    // 85 = movableLaser(br)
+    // 86 = movableLaser(bl)
+    // 87 = movableLaser(lr)
+    // 88 = movableLaser(ll)
+    // 100 = gate
+    // 101 = battery
+    // 110 = teleporterGreen
+    // 111 = teleporterRed
+    // 112 = teleporterBlue
+    // 200 = player
+    // 201 = doppel
 
-    //属性
-    //最終的には分ける？
-    // 10 = arrow
-    // 99 = goal_switch
-
-    // 向き
-    // 最終的には分ける？
-    // 50 = up
-    // 51 = left
-    // 52 = down
-    // 53 = right
     // public static int[,,] map;
     public static int[,,] map = {
       {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1},
-        {1, 1, 1, 7, 7, 7, 7, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+        {1, 1, 1, 3, 3, 3, 3, 0, 1, 1, 1, 1, 1},
+        {1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
       },
       {
-        {100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 200, 0, 0},
+        {201, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 101, 0, 0, 0, 0, 0, 0, 0, 101, 200, 0, 0},
+        {0, 0, 0, 0, 0, 0, 2, 53, 0, 0, 0, 0, 0},
+        {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 111, 0, 0, 0, 0, 0, 0, 0},
+        {0, 61, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0, 0},
+        {0, 110, 0, 0, 0, 61, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 112, 0, 110, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 9, 0, 21, 0, 0, 0, 0, 0, 0, 0},
-        {0, 6, 0, 12, 0, 6, 0, 0, 0, 0, 0, 0, 0},
-        {0, 20, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 22, 0, 20, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
       }

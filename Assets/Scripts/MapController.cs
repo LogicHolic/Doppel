@@ -8,8 +8,10 @@ using System;
 
 public class MapController : MonoBehaviour {
 	public GameObject hardBlock;
+	public GameObject hardPowerBlock;
 	public GameObject hardLightningBlock;
 	public GameObject movableBlock;
+	public GameObject movablePowerBlock;
 	public GameObject movableLightningBlock;
 	public GameObject movableLightningIBlock;
 	public GameObject movableLightningLBlock;
@@ -18,6 +20,7 @@ public class MapController : MonoBehaviour {
 	public GameObject player;
 	public GameObject doppel;
 	public GameObject gate;
+	public GameObject battery;
 	public GameObject teleporterGreen;
 	public GameObject teleporterRed;
 	public GameObject teleporterBlue;
@@ -73,54 +76,54 @@ public class MapController : MonoBehaviour {
 							Create("HardBlock", mapPos);
 							break;
 						case 2:
-							Create("HardLightningBlock", mapPos);
+							Create("HardPowerBlock", mapPos);
 							break;
 						case 3:
-							Create("HardLightningBlock", mapPos,true);
-							break;
-						case 4:
-							Create("MovableBlock", mapPos);
-							break;
-						case 5:
-							Create("MovableLightningBlock", mapPos);
-							break;
-						case 6:
-							Create("MovableLightningBlock", mapPos, true);
-							break;
-						case 7:
 							Create("HardIceBlock", mapPos);
 							break;
-						case 8:
+						case 11:
+							Create("HardLightningBlock", mapPos);
+							break;
+						case 51:
+							Create("MovableBlock", mapPos);
+							break;
+						case 52:
+							Create("MovablePowerBlock", mapPos);
+							break;
+						case 53:
 							Create("MovableIceBlock", mapPos);
 							break;
-						case 9:
-							Create("Gate", mapPos);
+						case 61:
+							Create("MovableLightningBlock", mapPos);
 							break;
-						case 10:
-							Create("TeleporterGreen", mapPos);
-							break;
-						case 11:
+						case 62:
 							Create("MovableLightningIBlock", mapPos);
 							break;
-						case 12:
-							Create("MovableLaserBlock", mapPos);
-							break;
-						case 13:
+						case 64:
 							Create("MovableLightningLBlock", mapPos);
 							break;
-						case 20:
-							Create("TeleporterGreen", mapPos);
-							break;
-						case 21:
-							Create("TeleporterRed", mapPos);
-							break;
-						case 22:
-							Create("TeleporterBlue", mapPos);
+						case 81:
+							Create("MovableLaserBlock", mapPos);
 							break;
 						case 100:
-							Create("Player", mapPos);
+							Create("Gate", mapPos);
+							break;
+						case 101:
+							Create("Battery", mapPos);
+							break;
+						case 110:
+							Create("TeleporterGreen", mapPos);
+							break;
+						case 111:
+							Create("TeleporterRed", mapPos);
+							break;
+						case 112:
+							Create("TeleporterBlue", mapPos);
 							break;
 						case 200:
+							Create("Player", mapPos);
+							break;
+						case 201:
 							Create("Doppel", mapPos);
 							doppels.Add(moMap[floor, dx, dz]);
 							break;
@@ -131,7 +134,7 @@ public class MapController : MonoBehaviour {
 		goalFlag = new bool[goalCount];
 	}
 
-	public void Create(string objName, MapPos mapPos, bool always = false) {
+	public void Create(string objName, MapPos mapPos, bool always = false, int rotationState = 0) {
 		Vector3 vPos = MapposToUnipos(mapPos);
 
 		if (objName == ("HardBlock")) {
@@ -148,11 +151,21 @@ public class MapController : MonoBehaviour {
 			l.conductBack = true;
 			l.conductUp = true;
 			l.conductDown = true;
-			if (always) {
-				l.lightning = true;
-				l.lightningSwitch = true;
-				l.always = true;
-			}
+			h.nowPos = mapPos;
+		} else if (objName == ("HardPowerBlock")) {
+			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(hardPowerBlock, vPos, Quaternion.identity);
+			HardObjectController h = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<HardObjectController>();
+			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			l.conductForward = true;
+			l.conductBack = true;
+			l.conductUp = true;
+			l.conductDown = true;
+
+			l.lightning = true;
+			l.lightningSwitch = true;
+			l.always = true;
 			h.nowPos = mapPos;
 		} else if (objName == ("Player")) {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(player, vPos-new Vector3(0,0.5f,0), Quaternion.identity);
@@ -176,11 +189,21 @@ public class MapController : MonoBehaviour {
 			l.conductBack = true;
 			l.conductUp = true;
 			l.conductDown = true;
-			if (always) {
-				l.lightning = true;
-				l.lightningSwitch = true;
-				l.always = true;
-			}
+			b.nowPos = mapPos;
+		} else if (objName == ("MovablePowerBlock")) {
+			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movablePowerBlock, vPos, Quaternion.identity);
+			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			l.conductForward = true;
+			l.conductBack = true;
+			l.conductUp = true;
+			l.conductDown = true;
+
+			l.lightning = true;
+			l.lightningSwitch = true;
+			l.always = true;
 			b.nowPos = mapPos;
 		} else if (objName == ("MovableLightningIBlock")) {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningIBlock, vPos, Quaternion.identity);
@@ -188,11 +211,6 @@ public class MapController : MonoBehaviour {
 			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.conductLeft = true;
 			l.conductRight = true;
-			if (always) {
-				l.lightning = true;
-				l.lightningSwitch = true;
-				l.always = true;
-			}
 			b.nowPos = mapPos;
 		}  else if (objName == ("MovableLightningLBlock")) {
 			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(movableLightningLBlock, vPos, Quaternion.identity);
@@ -200,13 +218,19 @@ public class MapController : MonoBehaviour {
 			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
 			l.conductForward = true;
 			l.conductRight = true;
-			if (always) {
-				l.lightning = true;
-				l.lightningSwitch = true;
-				l.always = true;
-			}
 			b.nowPos = mapPos;
-		}	else if (objName == ("Gate")) {
+		}	else if (objName == ("Battery")) {
+			moMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(battery, vPos, Quaternion.identity);
+			BlockController b = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<BlockController>();
+			LightningController l = moMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
+			l.conductLeft = true;
+			l.conductRight = true;
+			l.conductForward = true;
+			l.conductBack = true;
+			l.conductUp = true;
+			l.conductDown = true;
+			b.nowPos = mapPos;
+		} else if (objName == ("Gate")) {
 			goMap[mapPos.floor, mapPos.x, mapPos.z] = Instantiate(gate, vPos, Quaternion.identity);
 			GateController g = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<GateController>();
 			LightningController l = goMap[mapPos.floor, mapPos.x, mapPos.z].GetComponent<LightningController>();
@@ -269,13 +293,13 @@ public class MapController : MonoBehaviour {
 		// 	stageClear = true;
 		// }
 	}
-
-	private bool GoalJudge() {
-		for (int i = 0; i < goalFlag.Length; i++) {
-			if (!goalFlag[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
+	//
+	// private bool GoalJudge() {
+	// 	for (int i = 0; i < goalFlag.Length; i++) {
+	// 		if (!goalFlag[i]) {
+	// 			return false;
+	// 		}
+	// 	}
+	// 	return true;
+	// }
 }

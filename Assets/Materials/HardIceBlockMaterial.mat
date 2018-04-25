@@ -87,5 +87,5 @@ Material:
     - _ZWrite: 0
     - _snow_slider: 7.9
     m_Colors:
-    - _Color: {r: 0.89, g: 1, b: 1, a: 0.647}
+    - _Color: {r: 0.6149979, g: 0.9191176, b: 0.9191176, a: 0.647}
     - _EmissionColor: {r: 0.107, g: 0.093, b: 0.141, a: 1}

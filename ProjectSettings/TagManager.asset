@@ -22,6 +22,7 @@ TagManager:
   - Hard,Lightning,Absorb
   - Hard,Absorb
   - Movable,Reflection,Lightning,Laser
+  - Movable,Lightning,Battery
   layers:
   - Default
   - TransparentFX
