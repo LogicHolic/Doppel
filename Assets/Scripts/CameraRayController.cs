@@ -33,6 +33,14 @@ public class CameraRayController : MonoBehaviour {
 					HardObjectController h = obj.GetComponent<HardObjectController>();
 					MapPos pos = h.nowPos;
 					Replace(pos);
+				} else if (obj.name == ("HardLightningBlock(Clone)")) {
+					HardObjectController h = obj.GetComponent<HardObjectController>();
+					MapPos pos = h.nowPos;
+					Replace(pos);
+				} else if (obj.name == ("MovableBlock(Clone)")) {
+					BlockController b = obj.GetComponent<BlockController>();
+					MapPos pos = b.nowPos;
+					Replace(pos);
 				} else if (obj.name == ("Player(Clone)")) {
 					PlayerController p = obj.GetComponent<PlayerController>();
 					MapPos pos = p.nowPos;
@@ -48,6 +56,14 @@ public class CameraRayController : MonoBehaviour {
         } else if (obj.name == "InvisibleBlock(Clone)") {
           InvisibleBlockController inv = obj.GetComponent<InvisibleBlockController>();
           MapPos pos = inv.nowPos;
+          Replace(pos);
+        } else if (obj.name == "HardIceBlock(Clone)") {
+          HardIceBlockController h = obj.GetComponent<HardIceBlockController>();
+          MapPos pos = h.nowPos;
+          Replace(pos);
+        } else if (obj.name == "MovableIceBlock(Clone)") {
+          BlockController b = obj.GetComponent<BlockController>();
+          MapPos pos = b.nowPos;
           Replace(pos);
         } else if (obj.name == ("NullSelector")) {
           se.replaceState = "null";
@@ -72,10 +88,17 @@ public class CameraRayController : MonoBehaviour {
 
   void Replace(MapPos pos) {
     if (se.replaceState == "null") {
-      GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
-      GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
       if (pos.floor == 0) {
+        if (goMap[pos.floor+1, pos.x, pos.z] != null || moMap[pos.floor+1, pos.x, pos.z] != null) {
+          Replace(pos + new MapPos(1,0,0));
+          return;
+        }
+        GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
+        GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
         mc.Create("InvisibleBlock", pos);
+      } else {
+        GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
+        GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
       }
     }
     else if (se.replaceState == "Player") {
@@ -85,51 +108,73 @@ public class CameraRayController : MonoBehaviour {
         GameObject.DestroyImmediate(moMap[playerPos.floor, playerPos.x, playerPos.z]);
         mc.Create("Player", pos);
         playerPos = pos;
-      } else if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].name == "HardBlock(Clone)") {
+      } else if (goMap[pos.floor, pos.x, pos.z] != null && goMap[pos.floor, pos.x, pos.z].name != ("InvisibleBlock(Clone)")) {
+        if (goMap[pos.floor+1, pos.x, pos.z] != null || moMap[pos.floor+1, pos.x, pos.z] != null) {
+          Replace(pos + new MapPos(1,0,0));
+          return;
+        }
         pos.floor += 1;
         GameObject.DestroyImmediate(moMap[playerPos.floor, playerPos.x, playerPos.z]);
         mc.Create("Player", pos);
         playerPos = pos;
       }
     }
-    else if (se.replaceState == "HardBlock") {
-      if (pos.floor == 0) {
-        if (goMap[pos.floor, pos.x, pos.z] == null || goMap[pos.floor, pos.x, pos.z].tag == "Invisible") {
-          mc.Create("HardBlock", pos);
-        } else {
-          pos.floor += 1;
-          mc.Create("HardBlock", pos);
+    else if (se.replaceState == "Doppel") {
+      if (pos.floor == 1) {
+        if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].name == "Player(Clone)") {
+          playerPos = new MapPos(0,0,0);
         }
-      } else {
         GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
         GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
-        mc.Create("HardBlock", pos);
+        mc.Create("Doppel", pos);
+      } else if (goMap[pos.floor, pos.x, pos.z] != null  && goMap[pos.floor, pos.x, pos.z].name != ("InvisibleBlock(Clone)")) {
+        if (goMap[pos.floor+1, pos.x, pos.z] != null || moMap[pos.floor+1, pos.x, pos.z] != null) {
+          Replace(pos + new MapPos(1,0,0));
+          return;
+        }
+        pos.floor += 1;
+        mc.Create("Doppel", pos);
       }
-    } else if (se.replaceState == "MovableBlock") {
+    } else if (se.replaceState == "IceBlock") {
       if (pos.floor == 0) {
+        if (goMap[pos.floor+1, pos.x, pos.z] != null || moMap[pos.floor+1, pos.x, pos.z] != null) {
+          Replace(pos + new MapPos(1,0,0));
+          return;
+        }
         if (goMap[pos.floor, pos.x, pos.z] == null || goMap[pos.floor, pos.x, pos.z].tag == "Invisible") {
-          mc.Create("MovableBlock", pos);
+          mc.Create("HardIceBlock", pos);
         } else {
           pos.floor += 1;
-          mc.Create("MovableBlock", pos);
+          mc.Create("MovableIceBlock", pos);
         }
       } else {
+        if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].name == "Player(Clone)") {
+          playerPos = new MapPos(0,0,0);
+        }
         GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
         GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
-        mc.Create("MovableBlock", pos);
+        mc.Create("MovableIceBlock", pos);
       }
-    } else if (se.replaceState == "MovableLightningBlock") {
+    }
+    else {
       if (pos.floor == 0) {
+        if (goMap[pos.floor+1, pos.x, pos.z] != null || moMap[pos.floor+1, pos.x, pos.z] != null) {
+          Replace(pos + new MapPos(1,0,0));
+          return;
+        }
         if (goMap[pos.floor, pos.x, pos.z] == null || goMap[pos.floor, pos.x, pos.z].tag == "Invisible") {
-          mc.Create("MovableBlock", pos, true);
+          mc.Create(se.replaceState, pos);
         } else {
           pos.floor += 1;
-          mc.Create("MovableBlock", pos, true);
+          mc.Create(se.replaceState, pos);
         }
       } else {
+        if (moMap[pos.floor, pos.x, pos.z] != null && moMap[pos.floor, pos.x, pos.z].name == "Player(Clone)") {
+          playerPos = new MapPos(0,0,0);
+        }
         GameObject.DestroyImmediate(goMap[pos.floor, pos.x, pos.z]);
         GameObject.DestroyImmediate(moMap[pos.floor, pos.x, pos.z]);
-        mc.Create("MovableBlock", pos, true);
+        mc.Create(se.replaceState, pos);
       }
     }
   }

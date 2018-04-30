@@ -62,6 +62,7 @@ namespace Game {
   }
 
   public class GameStatic {
+    public static bool testPlay = false;
     public static bool gameOver = false;
     public static bool stageClear = false;
     public static bool stageEdit = false;

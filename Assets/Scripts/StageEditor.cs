@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using static Game.MapStatic;
 using static Game.GameStatic;
 
@@ -44,6 +45,7 @@ public class StageEditor : MonoBehaviour {
 		stageEdit = true;
 		gameOver = true;
 	}
+
 
 	// Update is called once per frame
 	void Update () {
