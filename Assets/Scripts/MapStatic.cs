@@ -186,5 +186,47 @@ namespace Game {
     public static MapPos UniposToMappos(Vector3 unityPos) {
       return(MapPos.ToMappos(UnivecToMapvec(unityPos)));
     }
+
+    public static void MakeMap() {
+  		floorSize = goMap.GetLength(0);
+  		mapSizeX = goMap.GetLength(1) - 4;
+  		mapSizeZ = goMap.GetLength(2) - 4;
+
+  		map = new int[floorSize, mapSizeX, mapSizeZ];
+
+  		for (int i = 0; i < floorSize; i++) {
+  			for (int j = 0; j < mapSizeX; j++) {
+  				for (int k = 0; k < mapSizeZ; k++) {
+  					if (goMap[i,j+2,k+2] != null) {
+  						map[i,j,k] = GOtoObjectNum(goMap[i,j+2,k+2]);
+  					} else if (moMap[i,j+2,k+2] != null) {
+  						map[i,j,k] = GOtoObjectNum(moMap[i,j+2,k+2]);
+  					} else {
+  						map[i,j,k] = 0;
+  					}
+  				}
+  			}
+  		}
+  	}
+    static int GOtoObjectNum (GameObject obj) {
+    		if (obj.name == ("HardBlock(Clone)")) {
+    			return 1;
+    		} else if (obj.name == "HardPowerBlock(Clone)") {
+    			return 2;
+    		} else if (obj.name == "HardIceBlock(Clone)") {
+    			return 3;
+    		} else if (obj.name == "MovableBlock(Clone)") {
+    			return 51;
+    		} else if (obj.name == "MovableIceBlock(Clone)") {
+    			return 53;
+    		} else if (obj.name == "MovableLightningBlock(Clone)") {
+    			return 61;
+    		} else if (obj.name == "Player(Clone)") {
+    			return 200;
+    		} else if (obj.name == "Doppel(Clone)") {
+    			return 201;
+    		}
+    		return 0;
+    	}
   }
 }

@@ -29,15 +29,15 @@ public class StageManager : MonoBehaviour {
 		TextAsset mapTextAsset = Resources.Load(filePath) as TextAsset;
 		string[] mapText = Regex.Split(mapTextAsset.text,@"\D+");
 
-		floorSize = int.Parse(mapText[0]);
-		mapSizeX = int.Parse(mapText[1]);
-		mapSizeZ = int.Parse(mapText[2]);
+		floorSize = 2;
+		mapSizeX = 13;
+		mapSizeZ = 13;
 		// for (int i = 0; i < mapText.Length; i++) {
 		// 	Debug.Log(mapText[i]);
 		// }
 
 		map = new int[floorSize, mapSizeX, mapSizeZ];
-		int index = 3;
+		int index = 0;
 		for (int i = 0; i < floorSize; i++) {
 			for (int j = 0; j < mapSizeX; j++) {
 				for (int k = 0; k < mapSizeZ; k++) {

@@ -31,24 +31,24 @@ public class MapController : MonoBehaviour {
 	public int teleportNumR;
 	public int teleportNumB;
 
+	int[,,] extendedMap;
+
 	void Awake () {
 		//player生成
 		//今後処理長くなりそうならメソッドにする
-		doppels = new List<GameObject>();
-		teleporters = new TeleporterController[2,3];
 
 		floorSize = map.GetLength(0);
 		mapSizeX = map.GetLength(1);
 		mapSizeZ = map.GetLength(2);
-		ExtendMap();
+		extendedMap = ExtendMap();
 
-		floorSize = map.GetLength(0);
-		mapSizeX = map.GetLength(1);
-		mapSizeZ = map.GetLength(2);
+		floorSize = extendedMap.GetLength(0);
+		mapSizeX = extendedMap.GetLength(1);
+		mapSizeZ = extendedMap.GetLength(2);
 		CreateMap();
 	}
 
-	void ExtendMap() {
+	int[,,] ExtendMap() {
 		int[,,] extendedMap = new int[floorSize, mapSizeX+4, mapSizeZ+4];
 		for (int i = 0; i < floorSize; i++) {
 			for (int j = 0; j < mapSizeX; j++) {
@@ -57,10 +57,16 @@ public class MapController : MonoBehaviour {
 				}
 			}
 		}
-		map = extendedMap;
+		return extendedMap;
 	}
 
-	void CreateMap() {
+	public void CreateMap() {
+		doppels = new List<GameObject>();
+		teleporters = new TeleporterController[2,3];
+		teleportNumB = 0;
+		teleportNumR = 0;
+		teleportNumG = 0;
+
 		goMap = new GameObject[floorSize, mapSizeX, mapSizeZ];
 		moMap = new GameObject[floorSize, mapSizeX, mapSizeZ];
 		int goalCount= 0;
@@ -68,7 +74,7 @@ public class MapController : MonoBehaviour {
 			for (int dz = 0; dz < mapSizeZ; dz++) {
 				for (int dx = 0; dx < mapSizeX; dx++) {
 					MapPos mapPos = new MapPos(floor, dx, dz);
-					switch (map[floor, dx, dz])
+					switch (extendedMap[floor, dx, dz])
 					 {
 						case 0:
 							break;
@@ -131,7 +137,6 @@ public class MapController : MonoBehaviour {
 				}
 			}
 		}
-		goalFlag = new bool[goalCount];
 	}
 
 	public void Create(string objName, MapPos mapPos, bool always = false, int rotationState = 0) {
